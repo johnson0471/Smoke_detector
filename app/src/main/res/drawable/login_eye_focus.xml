@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_redeye_focus" android:state_checked="true"/>
+    <item android:state_checked="false" android:drawable="@drawable/ic_redeye"/>
+</selector>
+<!--第一行程式代表觸碰到輸入框，icon就會變色>
+<第二行代表沒有觸碰就是原本的顏色>

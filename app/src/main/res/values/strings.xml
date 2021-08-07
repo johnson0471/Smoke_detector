@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Smoke_detector</string>
+    <string name="btn_forgot_password">忘記密碼 ?</string>
+    <string name="et_account_hint">帳號</string>
+    <string name="et_password_hint">密碼</string>
+    <string name="btn_login">登入</string>
+    <string name="btn_registered">建立帳戶</string>
+    <string name="tv_or_use">或者使用</string>
+    <string name="btn_google">Google登入</string>
+    <string name="tv_title">智慧型偵煙住警器</string>
+    <string name="tv_smart_smoke_detector">Smart Smoke Detector</string>
+</resources>

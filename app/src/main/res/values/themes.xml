@@ -1,0 +1,34 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Smoke_detector" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/gray</item>
+        <item name="colorPrimary">@color/teal_200</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentStatus">false</item> <!--可以將頁面拉伸到狀態欄頂部-->
+        <item name="android:windowTranslucentNavigation">false</item><!--可以頁面拉伸到虛擬按鍵底部-->
+        <item name="textAllCaps">false</item> <!--將預設大寫的功能轉成false-->
+    </style>
+
+    <style name="MyHint.style" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:textColor">@color/white</item>
+        <item name="startIconTintMode">src_atop</item>
+        <item name="startIconTint">@color/white</item>
+        <item name="endIconTint">@color/teal_200</item>
+        <item name="endIconTintMode">src_atop</item>
+        <item name="boxBackgroundColor">@color/halfwhite</item>
+        <item name="boxStrokeColor">@color/teal_200</item>
+        <item name="boxStrokeErrorColor">@color/red</item>
+        <item name="hintTextColor">@color/teal_200</item>
+        <item name="helperTextEnabled">true</item>
+    </style>
+
+
+</resources>

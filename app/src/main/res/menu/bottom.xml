@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/btn_temperature"
+        android:icon="@drawable/ic_thermometer"
+        android:enabled="true"
+        android:title="溫度感測"/>
+    <item
+        android:id="@+id/btn_humidity"
+        android:icon="@drawable/ic_water_drop"
+        android:enabled="true"
+        android:title="濕度感測"/>
+    <item
+        android:id="@+id/btn_smoke"
+        android:icon="@drawable/ic_smoke_detector"
+        android:enabled="true"
+        android:title="煙霧偵測"/>
+    <item
+        android:id="@+id/btn_home_safety"
+        android:icon="@drawable/ic_love"
+        android:enabled="true"
+        android:title="居家安全"/>
+
+</menu>
