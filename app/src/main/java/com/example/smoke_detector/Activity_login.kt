@@ -1,22 +1,16 @@
 package com.example.smoke_detector
 
-import android.app.VoiceInteractor
+
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
+
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
-import androidx.core.graphics.green
-import androidx.core.graphics.red
-import com.example.smoke_detector.R
+
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import org.w3c.dom.Text
-import android.text.TextWatcher as T
-import android.text.TextWatcher as AndroidTextTextWatcher
+
 
 class Activity_login : AppCompatActivity() {
 
@@ -24,10 +18,10 @@ class Activity_login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val et_account = findViewById<TextInputEditText>(R.id.et_account)
+        val et_email = findViewById<TextInputEditText>(R.id.et_email)
         val et_password = findViewById<TextInputEditText>(R.id.et_password)
-        val input_account = findViewById<TextInputLayout>(R.id.input_account_et)
-        val input_password = findViewById<TextInputLayout>(R.id.input_password_et)
+        val input_email = findViewById<TextInputLayout>(R.id.input_email_login)
+        val input_password = findViewById<TextInputLayout>(R.id.input_password_login)
         val btn_registerd = findViewById<Button>(R.id.btn_registered)
         val btn_login = findViewById<Button>(R.id.btn_login)
         val intent_temperature = Intent(this,Activity_temperature::class.java)
@@ -35,12 +29,12 @@ class Activity_login : AppCompatActivity() {
 
         btn_login.setOnClickListener {
 
-            if (et_account.text.toString()
-                    .isEmpty() || et_account.text.toString().length > 10  //若帳號輸入空或超過10個字，則提示字元顯示請輸入正確的帳號!!!，否則為空
+            if (et_email.text.toString()
+                    .isEmpty() || et_email.text.toString().length > 10  //若帳號輸入空或超過10個字，則提示字元顯示請輸入正確的帳號!!!，否則為空
             ) {
-                input_account.error = "請輸入正確的帳號!!!"
+                input_email.error = "請輸入正確的帳號!!!"
             } else {
-                input_account.error = null
+                input_email.error = null
             }
 
             if (et_password.text.toString()
@@ -51,7 +45,7 @@ class Activity_login : AppCompatActivity() {
                 input_password.error = null
             }
 
-            if (et_account.text.toString().isNotEmpty() && et_password.text.toString() //若帳號且密碼不為空，則跳出訊息登入成功，顯示對話框
+            if (et_email.text.toString().isNotEmpty() && et_password.text.toString() //若帳號且密碼不為空，則跳出訊息登入成功，顯示對話框
                     .isNotEmpty()
             ) {
                 Toast.makeText(this, "登入成功!!!", Toast.LENGTH_SHORT).show()

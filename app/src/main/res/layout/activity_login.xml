@@ -20,39 +20,40 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:gravity="center"
-        android:id="@+id/input_account_et"
+        android:id="@+id/input_email_login"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="10"
-        app:startIconDrawable="@drawable/login_account_focus"
+        android:layout_marginTop="20dp"
+        app:boxStrokeWidth="2dp"
         app:endIconMode="clear_text"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/zlz1">
+        app:layout_constraintTop_toBottomOf="@+id/zlz1"
+        app:startIconDrawable="@drawable/login_email_focus">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_account"
+            android:id="@+id/et_email"
             android:layout_width="350dp"
             android:layout_height="60dp"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
-            android:hint="@string/et_account_hint"
-            android:inputType="textEmailAddress"
             android:singleLine="true"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyz@."
+            android:hint="電子郵件"
+            android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/zlz1" />
+            app:layout_constraintTop_toBottomOf="@+id/input_email_et" />
+
     </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:gravity="center"
-        android:id="@+id/input_password_et"
+        android:id="@+id/input_password_login"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
@@ -62,7 +63,7 @@
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_account_et"
+        app:layout_constraintTop_toBottomOf="@+id/input_email_login"
         app:passwordToggleDrawable="@drawable/login_eye_focus"
         app:passwordToggleEnabled="true"
         app:passwordToggleTintMode="src_atop"
@@ -92,7 +93,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_password_et" />
+        app:layout_constraintTop_toBottomOf="@+id/input_password_login" />
 
     <Button
         android:id="@+id/btn_login"

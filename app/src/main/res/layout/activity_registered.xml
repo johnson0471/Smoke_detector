@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_ag_password_et" />
+        app:layout_constraintTop_toBottomOf="@+id/input_ag_password_rg" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:gravity="center"
@@ -77,7 +77,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:gravity="center"
-        android:id="@+id/input_email_et"
+        android:id="@+id/input_email_rg"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
@@ -91,11 +91,11 @@
         app:startIconDrawable="@drawable/login_email_focus">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_email"
+            android:id="@+id/et_email_rg"
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:singleLine="true"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyz@"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyz@."
             android:hint="電子郵件"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,39 +104,11 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:gravity="center"
-        android:id="@+id/input_account_et2"
-        style="@style/MyHint.style"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="10"
-        app:endIconMode="clear_text"
-        app:errorEnabled="true"
-        app:startIconDrawable="@drawable/login_account_focus"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_email_et">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_account2"
-            android:layout_width="350dp"
-            android:layout_height="60dp"
-            android:singleLine="true"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyz"
-            android:hint="帳號"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_email_et" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:gravity="center"
-        android:id="@+id/input_password_et2"
+        android:id="@+id/input_password_rg"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
@@ -149,11 +121,11 @@
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_account_et2"
+        app:layout_constraintTop_toBottomOf="@+id/input_email_rg"
         app:startIconDrawable="@drawable/login_key_focus">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_password"
+            android:id="@+id/et_password_rg"
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:hint="密碼"
@@ -167,7 +139,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:gravity="center"
-        android:id="@+id/input_ag_password_et"
+        android:id="@+id/input_ag_password_rg"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
@@ -180,11 +152,11 @@
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_password_et2"
+        app:layout_constraintTop_toBottomOf="@+id/input_password_rg"
         app:startIconDrawable="@drawable/login_password_focus">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_ag_password"
+            android:id="@+id/et_ag_password_rg"
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:singleLine="true"
