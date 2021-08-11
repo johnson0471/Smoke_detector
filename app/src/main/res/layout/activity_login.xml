@@ -22,27 +22,28 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:gravity="center"
-        android:id="@+id/input_email_login"
+        android:id="@+id/input_account_login"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:boxStrokeWidth="2dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="10"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/zlz1"
-        app:startIconDrawable="@drawable/login_email_focus">
+        app:startIconDrawable="@drawable/login_account_focus">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_email"
+            android:id="@+id/et_account_login"
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:singleLine="true"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyz@."
-            android:hint="電子郵件"
-            android:inputType="textEmailAddress"
+            android:hint="帳號"
+            android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_email_et" />
@@ -63,14 +64,14 @@
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_email_login"
+        app:layout_constraintTop_toBottomOf="@+id/input_account_login"
         app:passwordToggleDrawable="@drawable/login_eye_focus"
         app:passwordToggleEnabled="true"
         app:passwordToggleTintMode="src_atop"
         app:startIconDrawable="@drawable/login_password_focus">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_password"
+            android:id="@+id/et_password_login"
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:hint="@string/et_password_hint"
@@ -146,7 +147,7 @@
 
 
     <ImageView
-        android:id="@+id/textView2"
+        android:id="@+id/divider1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"
@@ -164,13 +165,13 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/divider2"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/divider1"
         app:layout_constraintTop_toBottomOf="@+id/btn_registered" />
 
     <ImageView
-        android:id="@+id/textView3"
+        android:id="@+id/divider2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"
