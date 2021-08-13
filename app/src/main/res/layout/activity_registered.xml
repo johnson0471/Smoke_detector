@@ -104,35 +104,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:gravity="center"
-        android:id="@+id/input_account_rg"
-        style="@style/MyHint.style"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="10"
-        app:boxStrokeWidth="2dp"
-        app:endIconMode="clear_text"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_email_rg"
-        app:startIconDrawable="@drawable/login_account_focus">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_account_rg"
-            android:layout_width="350dp"
-            android:layout_height="60dp"
-            android:singleLine="true"
-            android:hint="帳號"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_email_rg" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -151,7 +123,7 @@
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_account_rg"
+        app:layout_constraintTop_toBottomOf="@+id/input_email_rg"
         app:startIconDrawable="@drawable/login_key_focus">
 
         <com.google.android.material.textfield.TextInputEditText
