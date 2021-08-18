@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_account_circle"
         android:title="個人資料"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/top_bar_menu"
+        android:icon="@drawable/ic_baseline_menu_24"
+        android:title="個人資料"
+        app:showAsAction="ifRoom" />
 </menu>

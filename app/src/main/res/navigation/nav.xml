@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/temperatureFragment">
+    <fragment
+        android:id="@+id/temperatureFragment"
+        android:name="com.example.smoke_detector.TemperatureFragment"
+        android:label="溫度偵測"
+        tools:layout="@layout/fragment_temperature" />
+    <fragment
+        android:id="@+id/humidityFragment"
+        android:name="com.example.smoke_detector.HumidityFragment"
+        android:label="濕度偵測"
+        tools:layout="@layout/fragment_humidity" />
+    <fragment
+        android:id="@+id/smokeFragment"
+        android:name="com.example.smoke_detector.SmokeFragment"
+        android:label="煙霧感測"
+        tools:layout="@layout/fragment_smoke" />
+    <fragment
+        android:id="@+id/residentialFragment"
+        android:name="com.example.smoke_detector.ResidentialFragment"
+        android:label="住宅安全"
+        tools:layout="@layout/fragment_residential" />
+</navigation>

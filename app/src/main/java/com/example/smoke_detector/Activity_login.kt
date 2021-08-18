@@ -1,6 +1,7 @@
 package com.example.smoke_detector
 
 
+import android.app.ActivityGroup
 import android.content.Intent
 
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +36,6 @@ class Activity_login : AppCompatActivity() {
         val btn_login = findViewById<Button>(R.id.btn_login)
         val btn_register = findViewById<Button>(R.id.btn_registered)
         val intent_registered = Intent(this, Activity_registered::class.java)
-        val intent_temperature = Intent(this, Activity_temperature::class.java)
         btn_login.setOnClickListener {
 
             if (email.text.toString().isEmpty()) {
@@ -72,7 +72,6 @@ class Activity_login : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.e("Task message", "Successful")
-                    Toast.makeText(this, "會員登入成功", Toast.LENGTH_SHORT).show()
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
@@ -81,7 +80,9 @@ class Activity_login : AppCompatActivity() {
                     user_auth?.let {
                         val email_auth = user_auth.email
                         if (email_auth != email.text.toString())
+                        {
                             input_email.error = "請重新輸入電子郵件"
+                        }else input_email.error = null
                     }
                     input_password.error = "請重新輸入密碼"
                     updateUI(null)
@@ -90,13 +91,15 @@ class Activity_login : AppCompatActivity() {
     }
 
     private fun updateUI(currentuser: FirebaseUser?) {
-        val intent = Intent(this, Activity_temperature::class.java)
-
+        val intent = Intent(this,ControlActivity::class.java)
         if (currentuser != null) {
-            startActivity(intent)
-        } else {
-            Toast.makeText(this, "電子郵件或密碼有誤", Toast.LENGTH_SHORT).show()
-        }
+            if (currentuser.isEmailVerified){
+                Toast.makeText(this, "恭喜會員登入成功~~~", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+            }else
+                Toast.makeText(this, "請驗證您的電子郵件", Toast.LENGTH_SHORT).show()
+        }else
+            Toast.makeText(this, "電子郵件或密碼有誤，請重新檢查", Toast.LENGTH_SHORT).show()
 
     }
 }

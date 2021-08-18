@@ -6,38 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/half_gray"
-    android:orientation="vertical">
-
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:liftOnScroll="true"
-        tools:targetApi="lollipop">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:scrollbarStyle="outsideInset"
-            app:menu="@menu/top"
-            app:navigationIcon="@drawable/ic_baseline_menu_24"
-            app:title="住宅區平面圖"
-            app:titleCentered="true"
-            app:titleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            app:titleTextColor="@color/white" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
+    android:orientation="vertical"
+    tools:context=".ResidentialFragment">
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="57dp"
         android:foregroundGravity="center"
         app:layout_constraintBottom_toTopOf="@id/icon_indication"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +25,8 @@
             android:layout_height="370dp"
             android:src="@drawable/map"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -70,20 +47,23 @@
                     android:layout_height="35dp"
                     android:layout_marginEnd="110dp"
                     android:layout_marginStart="43dp"
-                    app:srcCompat="@drawable/gray_circle" />
+                    app:srcCompat="@drawable/gray_circle"
+                    tools:ignore="ContentDescription" />
 
                 <ImageView
                     android:id="@+id/circle2"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    app:srcCompat="@drawable/gray_circle" />
+                    app:srcCompat="@drawable/gray_circle"
+                    tools:ignore="ContentDescription" />
 
                 <ImageView
                     android:id="@+id/circle3"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="110dp"
-                    app:srcCompat="@drawable/gray_circle" />
+                    app:srcCompat="@drawable/gray_circle"
+                    tools:ignore="ContentDescription" />
             </LinearLayout>
 
             <LinearLayout
@@ -104,14 +84,16 @@
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_marginEnd="100dp"
-                    app:srcCompat="@drawable/gray_circle" />
+                    app:srcCompat="@drawable/gray_circle"
+                    tools:ignore="ContentDescription" />
 
 
                 <ImageView
                     android:id="@+id/circle5"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    app:srcCompat="@drawable/gray_circle" />
+                    app:srcCompat="@drawable/gray_circle"
+                    tools:ignore="ContentDescription" />
 
             </LinearLayout>
 
@@ -127,13 +109,15 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginEnd="110dp"
-                    app:srcCompat="@drawable/gray_circle" />
+                    app:srcCompat="@drawable/gray_circle"
+                    tools:ignore="ContentDescription" />
 
                 <ImageView
                     android:id="@+id/circle7"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    app:srcCompat="@drawable/gray_circle" />
+                    app:srcCompat="@drawable/gray_circle"
+                    tools:ignore="ContentDescription" />
 
 
                 <ImageView
@@ -141,7 +125,8 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="110dp"
-                    app:srcCompat="@drawable/gray_circle" />
+                    app:srcCompat="@drawable/gray_circle"
+                    tools:ignore="ContentDescription" />
             </LinearLayout>
 
 
@@ -163,7 +148,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:srcCompat="@drawable/red_circle"
-            />
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -176,7 +161,8 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:srcCompat="@drawable/blue_circle" />
+            app:srcCompat="@drawable/blue_circle"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -189,7 +175,8 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:srcCompat="@drawable/gray_circle" />
+            app:srcCompat="@drawable/gray_circle"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -219,7 +206,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center">
 
                 <TextView
@@ -542,7 +529,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="70dp"
                 android:gravity="center">
 
                 <TextView
@@ -584,18 +571,8 @@
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
-
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom"
-        style="@style/Widget.MaterialComponents.BottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom" />
 </LinearLayout>
 
 
