@@ -2,13 +2,16 @@ package com.example.smoke_detector
 
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.smoke_detector.databinding.ActivityRegisteredBinding
 import com.example.smoke_detector.databinding.ActivityRegisteredBinding.*
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -61,13 +64,22 @@ class Activity_registered : AppCompatActivity() {
         val email_auth = binding.etEmailRg.text.toString()
         val password_auth = binding.etPasswordRg.text.toString()
         val intent_login = Intent(this, Activity_login::class.java)
+
         auth.createUserWithEmailAndPassword(email_auth, password_auth)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    user?.sendEmailVerification()
+                        ?.addOnCompleteListener{
+                            if (task.isSuccessful) {
+                                Log.d("Task message", "Email sent.")
+                                sendUsers()
+                                Toast.makeText(this, "恭喜您成為我們的會員~~", Toast.LENGTH_SHORT).show()
+                                startActivity(intent_login)
+                                finish()
+                            }
+                        }
                     Log.e("Task message", "Registerd Successful")
-                    sendUsers()
-                    Toast.makeText(this, "恭喜您成為我們的會員~~", Toast.LENGTH_SHORT).show()
-                    startActivity(intent_login)
                 } else {
                     Log.e("Task message", "Failed " + task.exception)
                     Toast.makeText(this, "帳戶電子郵件已有使用者註冊", Toast.LENGTH_SHORT).show()
@@ -89,56 +101,70 @@ class Activity_registered : AppCompatActivity() {
 
         if (username.isEmpty() || email.isEmpty() || password.isEmpty() || ag_password.isEmpty()) {
 
-            if (username.isEmpty()) {
-                input_name.error = "名字欄位不能為空"
-            } else if (username.length >= 10) {
-                input_name.error = "名字欄位不能超過10個字"
-            } else input_name.error = null
+            when {
+                username.isEmpty() -> {
+                    input_name.error = "名字欄位不能為空"
+                }
+                username.length >= 10 -> {
+                    input_name.error = "名字欄位不能超過10個字"
+                }
+                else -> input_name.error = null
+            }
 
-            if (email.isEmpty()) {
-                input_email.error = "電子郵件欄位不能為空"
-            } else input_email.error = null
+            when {
+                email.isEmpty() -> {
+                    input_email.error = "電子郵件欄位不能為空"
+                }
+                email.isNotEmpty() -> {
+                    val status = email.contains( "@"+".com")
+                    if (status) {
+                        input_email.error = null
+                    } else input_email.error = "電子郵件格式有誤"
+                }
+            }
 
-            if (password.isEmpty()) {
-                input_password.error = "密碼欄位不能為空"
-            } else if (password.length < 6) {
-                input_password.error = "密碼欄位不能小於6個字"
-            } else input_password.error = null
+            when {
+                password.isEmpty() -> {
+                    input_password.error = "密碼欄位不能為空"
+                }
+                password.length < 6 -> {
+                    input_password.error = "密碼欄位不能小於6個字"
+                }
+                else -> input_password.error = null
+            }
 
-            if (ag_password.isEmpty()) {
-                input_agpassword.error = "請再次輸入正確的密碼"
-            } else if (ag_password != password) {
-                input_agpassword.error = "確認密碼與密碼不相符"
-            } else if (ag_password.length < 6) {
-                input_agpassword.error = "確認密碼與密碼不相符，且不能小於6個字"
-            } else input_agpassword.error = null
+            when {
+                ag_password.isEmpty() -> {
+                    input_agpassword.error = "請再次輸入正確的密碼"
+                }
+                ag_password != password -> {
+                    input_agpassword.error = "確認密碼與密碼不相符，請再次輸入正確的密碼"
+                }
+                ag_password.length < 6 -> {
+                    input_agpassword.error = "確認密碼與密碼不相符，且不能小於6個字"
+                }
+                else -> input_agpassword.error = null
+            }
 
         } else if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && ag_password.isNotEmpty()) {
 
-            if (username.isEmpty()) {
-                input_name.error = "名字欄位不能為空"
-            } else if (username.length >= 10) {
+            if (username.length >= 10) {
                 input_name.error = "名字欄位不能超過10個字"
             } else input_name.error = null
 
-            if (email.isEmpty()) {
-                input_email.error = "電子郵件欄位不能為空"
-            } else input_email.error = null
-
-            if (password.isEmpty()) {
-                input_password.error = "密碼欄位不能為空"
-            } else if (password.length < 6) {
+            if (password.length < 6) {
                 input_password.error = "密碼欄位不能小於6個字"
             } else input_password.error = null
 
-            if (ag_password.isEmpty()) {
-                input_agpassword.error = "請再次輸入正確的密碼"
-            } else if (ag_password != password) {
-                input_agpassword.error = "確認密碼與密碼不相符"
-            } else if (ag_password.length < 6) {
-                input_agpassword.error = "確認密碼與密碼不相符，且不能小於6個字"
-            } else input_agpassword.error = null
-
+            when {
+                ag_password != password -> {
+                    input_agpassword.error = "請再次輸入正確的密碼"
+                }
+                ag_password.length < 6 -> {
+                    input_agpassword.error = "確認密碼與密碼不相符，且不能小於6個字"
+                }
+                else -> input_agpassword.error = null
+            }
 
             if (username.length < 10 && password.length >= 6) {
                 input_name.error = null

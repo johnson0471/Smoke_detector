@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/humidity_bg"
-    tools:context="com.example.smoke_detector.Activity_humidity">
+    tools:context=".HumidityFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_bar"
