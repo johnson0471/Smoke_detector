@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,11 +9,36 @@
     android:orientation="vertical"
     tools:context=".ResidentialFragment">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/gray"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UnusedAttribute">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/materialToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/top"
+            app:navigationIcon="@drawable/ic_baseline_menu_24"
+            app:title="溫度感測"
+            app:titleCentered="true"
+            tools:ignore="UnusedAttribute" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="57dp"
         android:foregroundGravity="center"
         app:layout_constraintBottom_toTopOf="@id/icon_indication"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,8 +57,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,8 +69,8 @@
                     android:id="@+id/circle1"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:layout_marginEnd="110dp"
                     android:layout_marginStart="43dp"
+                    android:layout_marginEnd="110dp"
                     app:srcCompat="@drawable/gray_circle"
                     tools:ignore="ContentDescription" />
 
@@ -101,8 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="88dp"
-                android:gravity="center"
-                >
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/circle6"
@@ -189,7 +212,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="250dp"
         android:layout_weight="1"
         app:layout_constraintTop_toBottomOf="@+id/icon_indication"
         tools:ignore="MissingConstraints">
@@ -529,7 +552,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="70dp"
+                android:layout_marginBottom="30dp"
                 android:gravity="center">
 
                 <TextView
@@ -573,7 +596,7 @@
             </LinearLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

@@ -43,7 +43,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:gravity="center"
-        android:id="@+id/input_email_et"
+        android:id="@+id/input_email_fr"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
@@ -57,16 +57,16 @@
         app:startIconDrawable="@drawable/login_email_focus">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_email"
+            android:id="@+id/et_email_fr"
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:singleLine="true"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyz@"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyz@."
             android:hint="電子郵件"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_email_et" />
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_email_et" />
+        app:layout_constraintTop_toBottomOf="@+id/input_email_fr" />
 
     <pl.droidsonroids.gif.GifImageView
         android:foregroundGravity="center"

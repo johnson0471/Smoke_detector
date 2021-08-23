@@ -1,7 +1,6 @@
 package com.example.smoke_detector
 
 
-import android.app.ActivityGroup
 import android.content.Intent
 
 import androidx.appcompat.app.AppCompatActivity
@@ -91,7 +90,7 @@ class Activity_login : AppCompatActivity() {
     }
 
     private fun updateUI(currentuser: FirebaseUser?) {
-        val intent = Intent(this,ControlActivity::class.java)
+        val intent = Intent(this, ControlActivity::class.java)
         if (currentuser != null) {
             if (currentuser.isEmailVerified){
                 Toast.makeText(this, "恭喜會員登入成功~~~", Toast.LENGTH_SHORT).show()
