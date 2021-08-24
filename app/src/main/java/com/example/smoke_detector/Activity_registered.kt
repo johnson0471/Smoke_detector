@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.smoke_detector.databinding.ActivityRegisteredBinding
@@ -35,19 +36,19 @@ class Activity_registered : AppCompatActivity() {
         }
     }
 
-    fun register_User() {
-
-        usererror()
+    private fun register_User() {
+        user_error()
     }
 
 
-    fun sendUsers() {
+    private fun sendUsers() {
 
         val username = binding.etNameRg.text.toString()
         val email = binding.etEmailRg.text.toString()
+        val password = binding.etPasswordRg.text.toString()
 
         database = Firebase.database.reference
-        val User = user(username, email)
+        val User = user(username, email , password)
         database.child("Users").child(username).setValue(User).addOnSuccessListener {
 
             binding.etNameRg.text?.clear()
@@ -59,7 +60,7 @@ class Activity_registered : AppCompatActivity() {
     }
 
 
-    fun updateUserAuth() {
+    private fun updateUserAuth() {
 
         val email_auth = binding.etEmailRg.text.toString()
         val password_auth = binding.etPasswordRg.text.toString()
@@ -87,7 +88,7 @@ class Activity_registered : AppCompatActivity() {
             }
     }
 
-    private fun usererror() {
+    private fun user_error() {
 
         val input_name = binding.inputNameRg
         val input_email = binding.inputEmailRg
@@ -116,8 +117,7 @@ class Activity_registered : AppCompatActivity() {
                     input_email.error = "電子郵件欄位不能為空"
                 }
                 email.isNotEmpty() -> {
-                    val status = email.contains( "@"+".com")
-                    if (status) {
+                    if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                         input_email.error = null
                     } else input_email.error = "電子郵件格式有誤"
                 }
