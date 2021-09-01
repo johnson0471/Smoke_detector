@@ -12,7 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 
-class ControlActivity : AppCompatActivity() {
+class Conrtol_Fragment_Activity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

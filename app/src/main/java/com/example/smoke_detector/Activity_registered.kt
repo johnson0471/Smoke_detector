@@ -2,17 +2,21 @@ package com.example.smoke_detector
 
 
 import android.content.Intent
-import android.os.Build
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
+import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.example.smoke_detector.databinding.ActivityRegisteredBinding
 import com.example.smoke_detector.databinding.ActivityRegisteredBinding.*
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.actionCodeSettings
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -34,58 +38,17 @@ class Activity_registered : AppCompatActivity() {
         btn_register.setOnClickListener {
             register_User()
         }
+
+        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar_rg)
+        toolbar.setNavigationOnClickListener {
+            startActivity(Intent(this, Activity_login::class.java))
+            finish()
+        }
+
     }
 
     private fun register_User() {
         user_error()
-    }
-
-
-    private fun sendUsers() {
-
-        val username = binding.etNameRg.text.toString()
-        val email = binding.etEmailRg.text.toString()
-        val password = binding.etPasswordRg.text.toString()
-
-        database = Firebase.database.reference
-        val User = user(username, email , password)
-        database.child("Users").child(username).setValue(User).addOnSuccessListener {
-
-            binding.etNameRg.text?.clear()
-            binding.etEmailRg.text?.clear()
-            binding.etPasswordRg.text?.clear()
-            binding.etAgPasswordRg.text?.clear()
-
-        }
-    }
-
-
-    private fun updateUserAuth() {
-
-        val email_auth = binding.etEmailRg.text.toString()
-        val password_auth = binding.etPasswordRg.text.toString()
-        val intent_login = Intent(this, Activity_login::class.java)
-
-        auth.createUserWithEmailAndPassword(email_auth, password_auth)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    user?.sendEmailVerification()
-                        ?.addOnCompleteListener{
-                            if (task.isSuccessful) {
-                                Log.d("Task message", "Email sent.")
-                                sendUsers()
-                                Toast.makeText(this, "恭喜您成為我們的會員~~", Toast.LENGTH_SHORT).show()
-                                startActivity(intent_login)
-                                finish()
-                            }
-                        }
-                    Log.e("Task message", "Registerd Successful")
-                } else {
-                    Log.e("Task message", "Failed " + task.exception)
-                    Toast.makeText(this, "帳戶電子郵件已有使用者註冊", Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 
     private fun user_error() {
@@ -119,7 +82,7 @@ class Activity_registered : AppCompatActivity() {
                 email.isNotEmpty() -> {
                     if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                         input_email.error = null
-                    } else input_email.error = "電子郵件格式有誤"
+                    } else input_email.error = "電子郵件格式有誤，請再輸入一次"
                 }
             }
 
@@ -152,6 +115,12 @@ class Activity_registered : AppCompatActivity() {
                 input_name.error = "名字欄位不能超過10個字"
             } else input_name.error = null
 
+            if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                input_email.error = null
+            } else input_email.error = "電子郵件格式有誤，請再輸入一次"
+
+
+
             if (password.length < 6) {
                 input_password.error = "密碼欄位不能小於6個字"
             } else input_password.error = null
@@ -174,6 +143,68 @@ class Activity_registered : AppCompatActivity() {
                     updateUserAuth()
                 }
             }
+        }
+    }
+
+    private fun updateUserAuth() {
+
+        val email_auth = binding.etEmailRg.text.toString()
+        val password_auth = binding.etPasswordRg.text.toString()
+        val intent_login = Intent(this, Activity_login::class.java)
+        val intent = packageManager.getLaunchIntentForPackage("com.google.android.gm")
+
+        auth.createUserWithEmailAndPassword(email_auth, password_auth)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    user?.sendEmailVerification()
+                        ?.addOnCompleteListener {
+                            if (task.isSuccessful) {
+                                Log.e("Task message", "Email sent.")
+                                sendUsers()
+                                Toast.makeText(this, "恭喜您成為我們的會員~~", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                        }
+                } else {
+                    Log.e("Task message", "Failed " + task.exception)
+                    Toast.makeText(this, "帳戶電子郵件已有使用者註冊", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun sendUsers() {
+
+        val username = binding.etNameRg.text.toString()
+        val email = binding.etEmailRg.text.toString()
+        val password = binding.etPasswordRg.text.toString()
+
+        database = Firebase.database.reference
+        val User = user(username, email, password)
+        database.child("Users").child(username).setValue(User).addOnSuccessListener {
+
+            binding.etNameRg.text?.clear()
+            binding.etEmailRg.text?.clear()
+            binding.etPasswordRg.text?.clear()
+            binding.etAgPasswordRg.text?.clear()
+
+        }
+    }
+
+    private fun bottomSheet_dialog() {
+
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheet = layoutInflater.inflate(R.layout.bottom_sheet, null, false)
+        val btn_cancel = bottomSheet.findViewById<MaterialButton>(R.id.btn_cancel_bottomSheet)
+        val btn_gmail = bottomSheet.findViewById<LinearLayout>(R.id.btn_gmail)
+        val btn_yahoo = bottomSheet.findViewById<LinearLayout>(R.id.btn_yahoo)
+
+
+        bottomSheetDialog.setContentView(bottomSheet)
+        bottomSheetDialog.show()
+
+        btn_cancel.setOnClickListener {
+            bottomSheetDialog.dismiss()
         }
     }
 }

@@ -12,16 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Smoke_detector">
+
         <activity android:name=".Activity_start">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER" />
 
             </intent-filter>
         </activity>
         <activity android:name=".Activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
             </intent-filter>
         </activity>
         <activity android:name=".Activity_registered">
@@ -32,7 +33,6 @@
         <activity android:name=".Activity_forgot">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
             </intent-filter>
         </activity>
@@ -43,11 +43,16 @@
         </activity>
         <activity android:name=".Activity_change">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="smokedetector.com"
+                    android:scheme="https"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".ControlActivity">
+        <activity android:name=".Conrtol_Fragment_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
