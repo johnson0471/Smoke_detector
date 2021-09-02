@@ -33,9 +33,7 @@ class Activity_forgot : AppCompatActivity() {
         auth = Firebase.auth
 
         btn_determine.setOnClickListener {
-            //sendVerifyEmail()
-            bottomSheet_dialog()
-
+            sendVerifyEmail()
         }
 
         toolbar.setNavigationOnClickListener {
@@ -48,11 +46,11 @@ class Activity_forgot : AppCompatActivity() {
 
 
     private fun sendVerifyEmail() {
+        auth = FirebaseAuth.getInstance()
 
         val input_email = findViewById<TextInputLayout>(R.id.input_email_fr)
         val et_email = findViewById<TextInputEditText>(R.id.et_email_fr)
         val emailAddress = et_email.text.toString()
-        auth = FirebaseAuth.getInstance()
         val user = Firebase.auth
 
         if (emailAddress.isEmpty()) {
@@ -78,6 +76,7 @@ class Activity_forgot : AppCompatActivity() {
             }
         }
     }
+
      private fun bottomSheet_dialog() {
 
         val bottomSheetDialog = BottomSheetDialog(this)
@@ -94,7 +93,24 @@ class Activity_forgot : AppCompatActivity() {
              bottomSheetDialog.dismiss()
          }
 
+         btn_gmail.setOnClickListener{
+             gotoGmail()
+         }
+         btn_yahoo.setOnClickListener{
+             gotoYahoo()
+         }
+    }
 
+    private fun gotoGmail() {
+        val Intent = packageManager.getLaunchIntentForPackage("com.google.android.gm")
+        startActivity(Intent)
+        finish()
+    }
+
+    private fun gotoYahoo() {
+        val Intent = packageManager.getLaunchIntentForPackage("com.yahoo.mobile.client.android.mail")
+        startActivity(Intent)
+        finish()
     }
 }
 
