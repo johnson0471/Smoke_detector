@@ -150,22 +150,13 @@ class Activity_registered : AppCompatActivity() {
 
         val email_auth = binding.etEmailRg.text.toString()
         val password_auth = binding.etPasswordRg.text.toString()
-        val intent_login = Intent(this, Activity_login::class.java)
-        val intent = packageManager.getLaunchIntentForPackage("com.google.android.gm")
 
         auth.createUserWithEmailAndPassword(email_auth, password_auth)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    user?.sendEmailVerification()
-                        ?.addOnCompleteListener {
-                            if (task.isSuccessful) {
-                                Log.e("Task message", "Email sent.")
-                                sendUsers()
-                                Toast.makeText(this, "恭喜您成為我們的會員~~", Toast.LENGTH_SHORT).show()
-                                finish()
-                            }
-                        }
+                    sendUsers()
+                    Toast.makeText(this, "恭喜您成為我們的會員~~", Toast.LENGTH_SHORT).show()
+                    finish()
                 } else {
                     Log.e("Task message", "Failed " + task.exception)
                     Toast.makeText(this, "帳戶電子郵件已有使用者註冊", Toast.LENGTH_SHORT).show()
@@ -176,12 +167,12 @@ class Activity_registered : AppCompatActivity() {
     private fun sendUsers() {
 
         val username = binding.etNameRg.text.toString()
-        val email = binding.etEmailRg.text.toString()
-        val password = binding.etPasswordRg.text.toString()
+        val userEmail = binding.etEmailRg.text.toString()
+        val userPassword = binding.etPasswordRg.text.toString()
 
         database = Firebase.database.reference
-        val User = user(username, email, password)
-        database.child("Users").child(username).setValue(User).addOnSuccessListener {
+        val User = user(username, userEmail, userPassword)
+        database.child("已註冊").child(username).setValue(User).addOnSuccessListener {
 
             binding.etNameRg.text?.clear()
             binding.etEmailRg.text?.clear()
@@ -191,22 +182,22 @@ class Activity_registered : AppCompatActivity() {
         }
     }
 
-    private fun bottomSheet_dialog() {
-
-        val bottomSheetDialog = BottomSheetDialog(this)
-        val bottomSheet = layoutInflater.inflate(R.layout.bottom_sheet, null, false)
-        val btn_cancel = bottomSheet.findViewById<MaterialButton>(R.id.btn_cancel_bottomSheet)
-        val btn_gmail = bottomSheet.findViewById<LinearLayout>(R.id.btn_gmail)
-        val btn_yahoo = bottomSheet.findViewById<LinearLayout>(R.id.btn_yahoo)
-
-
-        bottomSheetDialog.setContentView(bottomSheet)
-        bottomSheetDialog.show()
-
-        btn_cancel.setOnClickListener {
-            bottomSheetDialog.dismiss()
-        }
-    }
+//    private fun bottomSheet_dialog() {
+//
+//        val bottomSheetDialog = BottomSheetDialog(this)
+//        val bottomSheet = layoutInflater.inflate(R.layout.bottom_sheet, null, false)
+//        val btn_cancel = bottomSheet.findViewById<MaterialButton>(R.id.btn_cancel_bottomSheet)
+//        val btn_gmail = bottomSheet.findViewById<LinearLayout>(R.id.btn_gmail)
+//        val btn_yahoo = bottomSheet.findViewById<LinearLayout>(R.id.btn_yahoo)
+//
+//
+//        bottomSheetDialog.setContentView(bottomSheet)
+//        bottomSheetDialog.show()
+//
+//        btn_cancel.setOnClickListener {
+//            bottomSheetDialog.dismiss()
+//        }
+//    }
 }
 
 /*override fun onStart() {

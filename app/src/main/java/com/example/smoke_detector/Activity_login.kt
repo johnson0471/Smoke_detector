@@ -2,18 +2,23 @@ package com.example.smoke_detector
 
 
 import android.content.Intent
+import android.net.sip.SipSession
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 
 
 import com.google.android.material.textfield.TextInputEditText
@@ -22,17 +27,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
 class Activity_login : AppCompatActivity() {
 
-    companion object{
+    companion object {
         private const val RC_SIGN_IN = 120
     }
 
 
     private val TAG = javaClass.simpleName
+    private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -71,8 +79,9 @@ class Activity_login : AppCompatActivity() {
                     input_password.error = "請輸入正確的密碼"
                 }
                 password.text.toString().length < 6 -> {
-                    input_password.error = "密碼不得小於6字，請再輸入一次"
+                    input_password.error = "請輸入正確的密碼，且密碼必須大於6字"
                 }
+
                 else -> input_password.error = null
             }
 
@@ -89,7 +98,7 @@ class Activity_login : AppCompatActivity() {
             startActivity(intent_forgot)
         }
 
-        btn_google.setOnClickListener{
+        btn_google.setOnClickListener {
             signIn()
         }
 
@@ -125,25 +134,99 @@ class Activity_login : AppCompatActivity() {
                             input_email.error = "請重新輸入電子郵件"
                         } else input_email.error = null
                     }
-                    input_password.error = "請重新輸入密碼"
                     updateUI(null)
                 }
             }
-
-
     }
 
-      private fun updateUI(currentuser: FirebaseUser?) {
+    private fun updateUI(currentUser: FirebaseUser?) {
         val intent = Intent(this, Conrtol_Fragment_Activity::class.java)
-        if (currentuser != null) {
-            if (currentuser.isEmailVerified) {
+        val input_password = findViewById<TextInputLayout>(R.id.input_password_login)
+
+        if (currentUser != null) {
+            if (currentUser.isEmailVerified) {
+
                 Toast.makeText(this, "恭喜會員登入成功~~~", Toast.LENGTH_SHORT).show()
                 startActivity(intent)
-            } else
-                Toast.makeText(this, "請驗證您的電子郵件", Toast.LENGTH_SHORT).show()
-        } else
-            Toast.makeText(this, "電子郵件或密碼有誤，請重新檢查", Toast.LENGTH_SHORT).show()
+                database = Firebase.database.reference
+                val email = currentUser.email.toString()
+                database.child("已登入").child("email").setValue(email)
 
+            } else {
+                Toast.makeText(this, "請驗證您的電子郵件", Toast.LENGTH_SHORT).show()
+                alertDialogVerifyEmail()
+            }
+
+        } else {
+            Toast.makeText(this, "密碼有誤，請重新檢查", Toast.LENGTH_SHORT).show()
+            input_password.error = "請輸入正確的密碼，且密碼必須大於6字"
+        }
+    }
+
+    private fun alertDialogVerifyEmail() {
+
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheet = layoutInflater.inflate(R.layout.bottom_sheet, null, false)
+        val dialog = AlertDialog.Builder(this)
+
+        bottomSheetDialog.setContentView(bottomSheet)
+
+
+        dialog.setTitle("驗證電子郵件")
+        dialog.setMessage("要驗證您的電子郵件嗎?")
+        dialog.setCancelable(false)
+        dialog.setPositiveButton("確定") {
+
+                dialog, which ->
+            bottomSheet_dialog()
+            val user = auth.currentUser
+            user?.sendEmailVerification()
+                ?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.e(TAG, "Email sent")
+                        Toast.makeText(this, "驗證信已送出", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.e(TAG, "Email sent error" + task.exception)
+                        Toast.makeText(this, "驗證信送出失敗", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+        }
+        dialog.setNegativeButton("取消") {
+
+                dialog, which ->
+            dialog.dismiss()
+
+        }
+        dialog.show()
+    }
+
+    private fun bottomSheet_dialog() {
+
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheet = layoutInflater.inflate(R.layout.bottom_sheet, null, false)
+        val btn_cancel = bottomSheet.findViewById<MaterialButton>(R.id.btn_cancel_bottomSheet)
+        val btn_gmail = bottomSheet.findViewById<LinearLayout>(R.id.btn_gmail)
+        val btn_yahoo = bottomSheet.findViewById<LinearLayout>(R.id.btn_yahoo)
+
+
+        bottomSheetDialog.setContentView(bottomSheet)
+        bottomSheetDialog.show()
+
+        btn_cancel.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+
+        btn_gmail.setOnClickListener {
+            val gotoGmail = packageManager.getLaunchIntentForPackage("com.google.android.gm")
+            startActivity(gotoGmail)
+            bottomSheetDialog.dismiss()
+        }
+        btn_yahoo.setOnClickListener {
+            val gotoYahoo = packageManager.getLaunchIntentForPackage("com.yahoo.mobile.client.android.mail")
+            startActivity(gotoYahoo)
+            bottomSheetDialog.dismiss()
+        }
     }
 
     private fun signIn() {
@@ -154,14 +237,14 @@ class Activity_login : AppCompatActivity() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        val intent = Intent(this,Conrtol_Fragment_Activity::class.java)
-        if (currentUser != null )
-            startActivity(intent)
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        val currentUser = auth.currentUser
+//        val intent = Intent(this, Conrtol_Fragment_Activity::class.java)
+//        if (currentUser != null)
+//            startActivity(intent)
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -170,7 +253,7 @@ class Activity_login : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val exception = task.exception
-            if (task.isSuccessful){
+            if (task.isSuccessful) {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)
@@ -180,7 +263,7 @@ class Activity_login : AppCompatActivity() {
                     // Google Sign In failed, update UI appropriately
                     Log.d(TAG, "Google sign in failed", e)
                 }
-            }else Log.d(TAG, exception.toString())
+            } else Log.d(TAG, "$exception")
         }
     }
 

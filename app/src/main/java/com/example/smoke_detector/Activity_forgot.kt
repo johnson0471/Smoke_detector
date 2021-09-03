@@ -94,23 +94,15 @@ class Activity_forgot : AppCompatActivity() {
          }
 
          btn_gmail.setOnClickListener{
-             gotoGmail()
+             val Intent = packageManager.getLaunchIntentForPackage("com.google.android.gm")
+             startActivity(Intent)
+             finish()
          }
          btn_yahoo.setOnClickListener{
-             gotoYahoo()
+             val Intent = packageManager.getLaunchIntentForPackage("com.yahoo.mobile.client.android.mail")
+             startActivity(Intent)
+             finish()
          }
-    }
-
-    private fun gotoGmail() {
-        val Intent = packageManager.getLaunchIntentForPackage("com.google.android.gm")
-        startActivity(Intent)
-        finish()
-    }
-
-    private fun gotoYahoo() {
-        val Intent = packageManager.getLaunchIntentForPackage("com.yahoo.mobile.client.android.mail")
-        startActivity(Intent)
-        finish()
     }
 }
 
