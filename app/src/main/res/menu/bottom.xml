@@ -17,7 +17,7 @@
         android:enabled="true"
         android:title="煙霧偵測"/>
     <item
-        android:id="@+id/residentialFragment"
+        android:id="@+id/cameraFragment"
         android:icon="@drawable/ic_love"
         android:enabled="true"
         android:title="居家安全"/>

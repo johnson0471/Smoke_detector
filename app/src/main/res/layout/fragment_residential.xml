@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/half_gray"
     android:orientation="vertical"
-    tools:context=".Conrtol_Fragment_Activity">
+    tools:context=".Control_Fragment_Activity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_bar"

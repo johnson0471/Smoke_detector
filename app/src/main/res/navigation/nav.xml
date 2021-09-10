@@ -20,8 +20,8 @@
         android:label="煙霧感測"
         tools:layout="@layout/fragment_smoke" />
     <fragment
-        android:id="@+id/residentialFragment"
-        android:name="com.example.smoke_detector.ResidentialFragment"
-        android:label="住宅安全"
-        tools:layout="@layout/fragment_residential" />
+        android:id="@+id/cameraFragment"
+        android:name="com.example.smoke_detector.CameraFragment"
+        android:label="居家安全"
+        tools:layout="@layout/fragment_camera" />
 </navigation>

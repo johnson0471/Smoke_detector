@@ -11,13 +11,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Smoke_detector">
+        android:theme="@style/Theme.Smoke_detector"
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute">
 
         <activity android:name=".Activity_start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
         </activity>
         <activity android:name=".Activity_login">
@@ -36,11 +37,7 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".Activity_verification">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+
         <activity android:name=".Activity_change">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -52,9 +49,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Conrtol_Fragment_Activity">
+        <activity android:name=".Control_Fragment_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+
             </intent-filter>
         </activity>
 
