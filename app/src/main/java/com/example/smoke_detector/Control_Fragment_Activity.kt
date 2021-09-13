@@ -1,5 +1,6 @@
 package com.example.smoke_detector
 
+import android.animation.ObjectAnimator
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_temperature.*
 
 
 class Control_Fragment_Activity : AppCompatActivity() {
@@ -51,6 +53,7 @@ class Control_Fragment_Activity : AppCompatActivity() {
 
 
         bottomNavigationView.setupWithNavController(navController)
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.temperatureFragment -> {
@@ -75,6 +78,7 @@ class Control_Fragment_Activity : AppCompatActivity() {
         }
 
 
+
         toolbar.setNavigationOnClickListener {
 
             if (drawerLayout.isDrawerOpen(navigationView)) {
@@ -90,25 +94,28 @@ class Control_Fragment_Activity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener {
             auth = FirebaseAuth.getInstance()
             val currentUser = auth.currentUser
-            Log.e(TAG,currentUser.toString())
+            Log.e(TAG, currentUser.toString())
             when (it.itemId) {
                 R.id.item_logout -> {
 
-                    val builder = AlertDialog.Builder(this)
-                    builder.setTitle("登出帳號")
-                    builder.setMessage("確定要登出您的帳號嗎")
-                    builder.setCancelable(false)
-                    builder.setNegativeButton("確定") { dialog, which ->
-                        Firebase.auth.signOut()
-                        startActivity(Intent(this,Activity_login::class.java))
-                        Log.e(TAG,currentUser.toString())
-                    }
-                    builder.show()
+                    AlertDialog.Builder(this)
+                        .setTitle("登出帳號")
+                        .setMessage("確定要登出您的帳號嗎")
+                        .setCancelable(false)
+                        .setPositiveButton("確定") { dialog, which ->
+                            Firebase.auth.signOut()
+                            startActivity(Intent(this, Activity_login::class.java))
+                            Log.e(TAG, currentUser.toString())
+                        }
+                        .setNeutralButton("取消", null)
+                        .show()
                     drawerLayout.closeDrawer(navigationView)
                 }
             }
             return@setNavigationItemSelectedListener true
         }
+
+
     }
 }
 

@@ -18,7 +18,6 @@
         <activity android:name=".Activity_start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".Activity_login">
@@ -52,6 +51,7 @@
         <activity android:name=".Control_Fragment_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
 
 
             </intent-filter>
