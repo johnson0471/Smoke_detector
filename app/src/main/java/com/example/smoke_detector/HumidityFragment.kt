@@ -10,7 +10,6 @@ import com.example.smoke_detector.R
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_temperature.*
 
 
 class HumidityFragment : Fragment() {

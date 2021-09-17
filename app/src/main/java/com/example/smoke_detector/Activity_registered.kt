@@ -182,35 +182,7 @@ class Activity_registered : AppCompatActivity() {
         }
     }
 
-//    private fun bottomSheet_dialog() {
-//
-//        val bottomSheetDialog = BottomSheetDialog(this)
-//        val bottomSheet = layoutInflater.inflate(R.layout.bottom_sheet, null, false)
-//        val btn_cancel = bottomSheet.findViewById<MaterialButton>(R.id.btn_cancel_bottomSheet)
-//        val btn_gmail = bottomSheet.findViewById<LinearLayout>(R.id.btn_gmail)
-//        val btn_yahoo = bottomSheet.findViewById<LinearLayout>(R.id.btn_yahoo)
-//
-//
-//        bottomSheetDialog.setContentView(bottomSheet)
-//        bottomSheetDialog.show()
-//
-//        btn_cancel.setOnClickListener {
-//            bottomSheetDialog.dismiss()
-//        }
-//    }
 }
-
-/*override fun onStart() {
-    super.onStart()
-    val intent_temperature = Intent(this,Activity_temperature::class.java)
-    val currentUser = auth.currentUser
-    val intent_login = Intent(this,Activity_login::class.java)
-    if (currentUser != null){
-        startActivity(intent_temperature)
-    }else{
-        startActivity(intent_login)
-    }
-}*/
 
 
 
