@@ -1,10 +1,14 @@
 package com.example.smoke_detector
 
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.util.Patterns
 import android.widget.Button
@@ -45,9 +49,9 @@ class Activity_login : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         auth = FirebaseAuth.getInstance()
         setContentView(R.layout.activity_login)
+
 
         val btn_forgot_password = findViewById<TextView>(R.id.btn_forgot_password)
         val input_email = findViewById<TextInputLayout>(R.id.input_email_login)
@@ -97,7 +101,7 @@ class Activity_login : AppCompatActivity() {
         }
 
         btn_google.setOnClickListener {
-            signIn()
+            signInWithGoogle()
         }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -107,7 +111,6 @@ class Activity_login : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
     }
-
 
 
     private fun signInUser() {
@@ -222,20 +225,20 @@ class Activity_login : AppCompatActivity() {
             bottomSheetDialog.dismiss()
         }
         btn_yahoo.setOnClickListener {
-            val gotoYahoo = packageManager.getLaunchIntentForPackage("com.yahoo.mobile.client.android.mail")
+            val gotoYahoo =
+                packageManager.getLaunchIntentForPackage("com.yahoo.mobile.client.android.mail")
             startActivity(gotoYahoo)
             bottomSheetDialog.dismiss()
         }
     }
 
-    private fun signIn() {
+    private fun signInWithGoogle() {
         // Configure Google Sign In
         val user = auth.currentUser
         Log.e(TAG, user?.email.toString())
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
-
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

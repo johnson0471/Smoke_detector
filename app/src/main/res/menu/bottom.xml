@@ -5,17 +5,17 @@
         android:id="@+id/temperatureFragment"
         android:icon="@drawable/ic_thermometer"
         android:enabled="true"
-        android:title="溫度感測"/>
+        android:title="溫度監控"/>
     <item
         android:id="@+id/humidityFragment"
         android:icon="@drawable/ic_water_drop"
         android:enabled="true"
-        android:title="濕度感測"/>
+        android:title="濕度監控"/>
     <item
         android:id="@+id/smokeFragment"
         android:icon="@drawable/ic_smoke_detector"
         android:enabled="true"
-        android:title="煙霧偵測"/>
+        android:title="煙霧監控"/>
     <item
         android:id="@+id/cameraFragment"
         android:icon="@drawable/ic_love"

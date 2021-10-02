@@ -33,9 +33,9 @@ class Activity_start : AppCompatActivity() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        val intent_fragment = Intent(this,Control_Fragment_Activity::class.java)
+        val intent = Intent(this,Control_Fragment_Activity::class.java)
         if (currentUser != null ){
-            startActivity(intent_fragment)
+            startActivity(intent)
             finish()
         }
     }
