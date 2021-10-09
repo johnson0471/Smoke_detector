@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import com.example.smoke_detector.R.layout.activity_control
+import com.example.smoke_detector.R.layout.fragment_temperature
 import com.example.smoke_detector.databinding.FragmentTemperatureBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -42,6 +43,7 @@ class Control_Fragment_Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(activity_control)
+
         database = Firebase.database.reference
         navigationView = navigation_drawer
         myWorkManager()
@@ -97,9 +99,6 @@ class Control_Fragment_Activity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
         bottomNavigationView.setOnItemReselectedListener {
-            if (it.isChecked){
-                return@setOnItemReselectedListener
-            }
         }
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -107,11 +106,7 @@ class Control_Fragment_Activity : AppCompatActivity() {
                     materialToolbar.title = "溫度監控"
                 }
             }
-            when (destination.id) {
-                R.id.humidityFragment -> {
-                    materialToolbar.title = "濕度監控"
-                }
-            }
+
             when (destination.id) {
                 R.id.smokeFragment -> {
                     materialToolbar.title = "煙霧監控"
@@ -120,6 +115,11 @@ class Control_Fragment_Activity : AppCompatActivity() {
             }
             when (destination.id) {
                 R.id.cameraFragment -> {
+                    materialToolbar.title = "攝像監控"
+                }
+            }
+            when (destination.id) {
+                R.id.residentialFragment -> {
                     materialToolbar.title = "居家安全"
                 }
             }
@@ -163,7 +163,7 @@ class Control_Fragment_Activity : AppCompatActivity() {
                             }
                             .setNeutralButton("取消", null)
                             .show()
-                    } else Log.e(TAG, "Error")
+                    } else Log.e(TAG, "null")
                 }
             }
         }

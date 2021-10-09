@@ -58,7 +58,7 @@ class SmokeFragment : Fragment() {
                     binding.tvStatus.text = "異常"
                     binding.tvStatus.setTextColor(Color.RED)
                     binding.ivSmoke.setImageResource(R.drawable.ic_warning)
-                    makeNotification()
+                    //makeNotification()
                 }else{
                     binding.tvStatus.text = "安全"
                     binding.tvStatus.setTextColor(Color.GREEN)
@@ -77,7 +77,7 @@ class SmokeFragment : Fragment() {
     private fun makeNotification() {
         val channelId = "smoke notification"
         val channelName = "煙霧偵測通知"
-        val manager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val manager = this.requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channel = NotificationChannel(channelId,channelName,NotificationManager.IMPORTANCE_HIGH)
         val intent = Intent(this.requireContext(),Control_Fragment_Activity::class.java)
         val paddingIntent = PendingIntent.getActivity(this.requireContext(),0,intent, PendingIntent.FLAG_UPDATE_CURRENT)

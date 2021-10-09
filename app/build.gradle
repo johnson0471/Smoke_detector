@@ -76,9 +76,8 @@ dependencies {
     //Firebase dynamic_links function
     implementation 'com.google.firebase:firebase-dynamic-links-ktx:20.1.1'
     implementation 'com.google.firebase:firebase-analytics-ktx:19.0.1'
-    //lifecycle_viewModel
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+
+    implementation 'com.github.john990:WaveView:v0.9'
 
 
     def work_version = "2.6.0"

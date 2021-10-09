@@ -29,6 +29,7 @@
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/drawable/login_email_focus.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/drawable/login_password_focus.xml" value="0.20234375" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/drawable/login_person_focus.xml" value="0.20234375" />
+        <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/drawable/red_circle.xml" value="0.20234375" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/drawable/switch_false_thumb.xml" value="0.20234375" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/drawable/switch_false_track.xml" value="0.20234375" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/drawable/switch_thumb.xml" value="0.20234375" />
@@ -48,6 +49,7 @@
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/activity_residential_map.xml" value="0.2" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/activity_smoke.xml" value="0.264" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/activity_start.xml" value="0.264" />
+        <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/activity_start2.xml" value="0.190234375" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/activity_temperature.xml" value="0.264" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/activity_verification.xml" value="0.10921052631578948" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/app_bar_main.xml" value="0.190234375" />
@@ -55,6 +57,7 @@
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/botton_sheet.xml" value="0.2" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/contain_layout.xml" value="0.190234375" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/fragement_bottomsheet.xml" value="0.190234375" />
+        <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/fragment_blank.xml" value="0.190234375" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/fragment_bottomsheet.xml" value="0.190234375" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/fragment_buttom_sheet.xml" value="0.190234375" />
         <entry key="..\:/Users/40740/Smoke_detector/app/src/main/res/layout/fragment_camera.xml" value="0.20811965811965813" />

@@ -16,7 +16,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NotificationCompat
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import com.example.smoke_detector.databinding.FragmentTemperatureBinding
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -34,15 +35,6 @@ class TemperatureFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val model: MyViewModel by activityViewModels()
-        model.temperture.observe(this) {
-            binding.tp1.text = it
-        }
-    }
-
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop")
@@ -50,20 +42,22 @@ class TemperatureFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
-        Log.d(TAG, "onStop")
+        Log.d(TAG, "onDestroyView")
+
     }
 
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy")
+    }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, " onPause")
+        Log.d(TAG, "onPause")
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d(TAG, "onAttach")
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +70,7 @@ class TemperatureFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        dataChange()
         Log.d(TAG, "onStart")
     }
 
@@ -88,7 +83,8 @@ class TemperatureFragment : Fragment() {
     private fun makeNotification() {
         val channelId = "temperature notification"
         val channelName = "溫度過高通知"
-        val manager = this.context!!.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val manager =
+            this.requireContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val channel =
             NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
         val intent = Intent(this.requireContext(), SmokeFragment::class.java)
@@ -110,28 +106,28 @@ class TemperatureFragment : Fragment() {
 
 
     private fun dataChange() {
-        database = Firebase.database.reference.child("test").child("溫度").child("5")
+        database = Firebase.database.reference
         val dataListener = object : ValueEventListener {
-            @SuppressLint("SetTextI18n")
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val tp_data = dataSnapshot.getValue<String>().toString()
-                val tp_data_int = tp_data.substring(0, tp_data.indexOf("°C")).toInt()
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val tp_data = snapshot.getValue<String>().toString()
+                val tp_data_int = snapshot.value.toString()
+                    .substring(0, snapshot.value.toString().indexOf("°C")).toInt()
                 val database_jg = Firebase.database.reference.child("Judgment").child("temperature")
                 database_jg.get().addOnSuccessListener {
-                    if (it.exists()) {
-                        val tp_jg = it.value.toString().toInt()
-                        if (tp_data_int >= tp_jg) {
-                            binding.tp1.text = "$tp_data_int°C"
-                            binding.tp1.setTextColor(Color.RED)
-                            makeNotification()
-                        } else {
-                            binding.tp1.text = "$tp_data_int°C"
-                            binding.tp1.setTextColor(Color.GREEN)
-                        }
+                    val tp_jg = it.value.toString().toInt()
+                    if (tp_data_int >= tp_jg) {
+                        binding.tp1.text = tp_data
+                        binding.tp1.setTextColor(Color.RED)
+                        Log.e(TAG, tp_data)
+                        //makeNotification()
+                    } else if (tp_data_int < tp_jg) {
+                        binding.tp1.text = tp_data
+                        binding.tp1.setTextColor(Color.GREEN)
+                        Log.e(TAG, tp_data)
+                        Log.e(TAG, "temperature safe")
                     }
-                    else Log.e(TAG, "temperature null")
                     val c = (tp_data_int + 2) / 0.06
-                    binding.progressBar.max = 1000
+                    binding.progressBar.max = 1005
                     val currentProgress = c.toInt()
                     ObjectAnimator.ofInt(progressBar, "progress", currentProgress)
                         .setDuration(1000)
@@ -140,10 +136,10 @@ class TemperatureFragment : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                Log.e(TAG, "onCancelled", databaseError.toException())
             }
         }
-        database.addValueEventListener(dataListener)
+        database.child("test").child("溫度").child("5").addValueEventListener(dataListener)
     }
 }
 

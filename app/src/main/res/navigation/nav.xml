@@ -10,11 +10,6 @@
         android:label="溫度偵測"
         tools:layout="@layout/fragment_temperature" />
     <fragment
-        android:id="@+id/humidityFragment"
-        android:name="com.example.smoke_detector.HumidityFragment"
-        android:label="濕度偵測"
-        tools:layout="@layout/fragment_humidity" />
-    <fragment
         android:id="@+id/smokeFragment"
         android:name="com.example.smoke_detector.SmokeFragment"
         android:label="煙霧感測"
@@ -24,4 +19,10 @@
         android:name="com.example.smoke_detector.CameraFragment"
         android:label="居家安全"
         tools:layout="@layout/fragment_camera" />
+
+    <fragment
+        android:id="@+id/residentialFragment"
+        android:name="com.example.smoke_detector.ResidentialFragment"
+        android:label="濕度偵測"
+        tools:layout="@layout/fragment_residential" />
 </navigation>

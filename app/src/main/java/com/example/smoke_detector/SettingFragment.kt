@@ -33,7 +33,6 @@ class SettingFragment : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         setDataTP()
-        setDataHD()
         resetButton()
     }
 
@@ -50,20 +49,6 @@ class SettingFragment : AppCompatActivity() {
             }
         }
     }
-    private fun setDataHD() {
-        btn_setHD.setOnClickListener {
-            val hd_number = hd_et.text.toString()
-            if (hd_number.isEmpty()) {
-                hd_input.error = "請輸入溫度數值"
-            } else {
-                hd_input.error = null
-                hideKeyboard(tp_et)
-                databaseReference.child("Judgment").child("humidity").setValue(hd_number.toInt())
-                Toast.makeText(this, "濕度設定成功", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
 
     private fun resetButton() {
         switch_reset.setOnClickListener {
