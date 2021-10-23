@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background1"
     android:layout_gravity="center"
+    android:background="@drawable/background1"
     tools:context=".Activity_change">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,132 +13,113 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_arrow"
+            app:navigationIcon="@drawable/ic_close"
             app:subtitleCentered="true"
-            app:title="溫度偵測"
-            app:titleTextColor="@color/white"
-            app:titleCentered="true" />
+            app:title="帳戶還原"
+            app:titleCentered="true"
+            app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:text="重設密碼"
-        android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar" />
 
-    <TextView
-        android:id="@+id/tv_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="密碼"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.081"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_1" />
-
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:background="@drawable/input_et"
-        android:drawableStart="@drawable/login_key_focus"
-        android:drawableEnd="@drawable/ic_redeye"
-        android:drawablePadding="12dp"
-        android:hint="請輸入您的密碼"
-        android:inputType="textPassword"
-        android:selectAllOnFocus="true"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColorLink="#FFFFFF"
-        android:maxLines="1"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_password" />
-
-    <TextView
-        android:id="@+id/tv_ag_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="確認密碼"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.091"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password" />
-
-    <EditText
-        android:id="@+id/et_ag_password"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:background="@drawable/input_et"
-        android:drawableStart="@drawable/login_password_focus"
-        android:drawableEnd="@drawable/ic_redeye"
-        android:drawablePadding="12dp"
-        android:hint="請再次輸入您的密碼"
-        android:inputType="textPassword"
-        android:selectAllOnFocus="true"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColorLink="#FFFFFF"
-        android:maxLines="1"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ag_password" />
-
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:text="輸入完成後，請按''確認''完成重設密碼。"
+        android:layout_marginTop="20dp"
+        android:text="請填入更改之密碼，輸入無誤請按確認鍵"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_ag_password" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_1" />
 
-    <Button
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_password_rd"
+        style="@style/MyHint.style"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_2"
+        app:passwordToggleDrawable="@drawable/ic_eye"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTintMode="src_atop"
+        app:startIconDrawable="@drawable/ic_key">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password_rd"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:hint="密碼"
+            android:inputType="textPassword"
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_ag_password_rd"
+        style="@style/MyHint.style"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_password_rd"
+        app:passwordToggleDrawable="@drawable/ic_eye"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTintMode="src_atop"
+        app:startIconDrawable="@drawable/ic_lock">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_ag_password_rd"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:hint="確認密碼"
+            android:inputType="textPassword"
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_determine"
         android:layout_width="350dp"
         android:layout_height="60dp"
-        android:layout_marginTop="40dp"
         android:background="@drawable/white_btn"
         android:text="確認"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_2" />
+        app:layout_constraintTop_toBottomOf="@+id/input_ag_password_rd" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

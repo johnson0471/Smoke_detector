@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.smoke_detector.R.layout.*
 import com.example.smoke_detector.databinding.ActivityChangeBinding.inflate
+import com.example.smoke_detector.databinding.ActivityForgotBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -23,20 +24,21 @@ import com.google.firebase.ktx.Firebase
 
 class Activity_forgot : AppCompatActivity() {
 
+    private lateinit var binding: ActivityForgotBinding
     private val TAG = javaClass.simpleName
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(activity_forgot)
-        val btn_determine = findViewById<Button>(R.id.btn_determine)
-        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar_forgot)
+        binding = ActivityForgotBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         auth = Firebase.auth
 
-        btn_determine.setOnClickListener {
+        binding.btnDetermine.setOnClickListener {
             sendVerifyEmail()
         }
 
-        toolbar.setNavigationOnClickListener {
+        binding.toolbarForgot.setNavigationOnClickListener {
             startActivity(Intent(this, Activity_login::class.java))
             finish()
         }

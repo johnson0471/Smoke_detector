@@ -1,6 +1,7 @@
 package com.example.smoke_detector
 
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,7 @@ class Activity_registered : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         binding = inflate(layoutInflater)
         setContentView(binding.root)
+
         val btn_register = binding.btnRegistered2
         btn_register.setOnClickListener {
             register_User()
@@ -86,6 +88,7 @@ class Activity_registered : AppCompatActivity() {
                 }
             }
 
+
             when {
                 password.isEmpty() -> {
                     input_password.error = "密碼欄位不能為空"
@@ -123,7 +126,9 @@ class Activity_registered : AppCompatActivity() {
 
             if (password.length < 6) {
                 input_password.error = "密碼欄位不能小於6個字"
-            } else input_password.error = null
+            }
+            else input_password.error = null
+
 
             when {
                 ag_password != password -> {
@@ -134,6 +139,7 @@ class Activity_registered : AppCompatActivity() {
                 }
                 else -> input_agpassword.error = null
             }
+
 
             if (username.length < 10 && password.length >= 6) {
                 input_name.error = null

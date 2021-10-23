@@ -16,6 +16,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.example.smoke_detector.databinding.ActivityLoginBinding
+import com.example.smoke_detector.databinding.ActivityStartBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -45,62 +47,58 @@ class Activity_login : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var binding: ActivityLoginBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         auth = FirebaseAuth.getInstance()
-        setContentView(R.layout.activity_login)
+        setContentView(binding.root)
 
-
-        val btn_forgot_password = findViewById<TextView>(R.id.btn_forgot_password)
-        val input_email = findViewById<TextInputLayout>(R.id.input_email_login)
-        val input_password = findViewById<TextInputLayout>(R.id.input_password_login)
-        val email = findViewById<TextInputEditText>(R.id.et_email_login)
-        val password = findViewById<TextInputEditText>(R.id.et_password_login)
-        val btn_login = findViewById<Button>(R.id.btn_login)
-        val btn_google = findViewById<Button>(R.id.btn_google)
-        val btn_register = findViewById<Button>(R.id.btn_registered)
         val intent_registered = Intent(this, Activity_registered::class.java)
         val intent_forgot = Intent(this, Activity_forgot::class.java)
 
-        btn_login.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
 
             when {
-                email.text.toString().isEmpty() -> {
-                    input_email.error = "請輸入正確的電子郵件"
+                binding.etEmailLogin.text.toString().isEmpty() -> {
+                    binding.inputEmailLogin.error = "請輸入正確的電子郵件"
                 }
-                !Patterns.EMAIL_ADDRESS.matcher(email.text.toString()).matches() -> {
-                    input_email.error = "電子郵件輸入格式有誤，請再輸入一次"
+                !Patterns.EMAIL_ADDRESS.matcher(binding.etEmailLogin.text.toString()).matches() -> {
+                    binding.inputEmailLogin.error = "電子郵件輸入格式有誤，請再輸入一次"
                 }
-                else -> input_email.error = null
+                else -> binding.inputEmailLogin.error = null
             }
 
             when {
-                password.text.toString().isEmpty() -> {
-                    input_password.error = "請輸入正確的密碼"
+                binding.etPasswordLogin.text.toString().isEmpty() -> {
+                    binding.inputPasswordLogin.error = "請輸入正確的密碼"
                 }
-                password.text.toString().length < 6 -> {
-                    input_password.error = "請輸入正確的密碼，且密碼必須大於6字"
+                binding.etPasswordLogin.text.toString().length < 6 -> {
+                    binding.inputPasswordLogin.error = "請輸入正確的密碼，且密碼必須大於6字"
                 }
 
-                else -> input_password.error = null
+                else -> binding.etPasswordLogin.error = null
             }
 
-            if (email.text.toString().isNotEmpty() && password.text.toString().isNotEmpty()) {
+            if (binding.etEmailLogin.text.toString().isNotEmpty() && binding.etPasswordLogin.text.toString().isNotEmpty()) {
                 signInUser()
             }
 
         }
 
-        btn_register.setOnClickListener {
+        binding.btnRegistered.setOnClickListener {
+
             startActivity(intent_registered)
+            binding.etEmailLogin.text!!.clear()
+            binding.etPasswordLogin.text!!.clear()
         }
-        btn_forgot_password.setOnClickListener {
+        binding.btnForgotPassword.setOnClickListener {
             startActivity(intent_forgot)
         }
 
-        btn_google.setOnClickListener {
+        binding.btnGoogle.setOnClickListener {
             signInWithGoogle()
         }
 
@@ -123,7 +121,7 @@ class Activity_login : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Log.e("Task message", "Successful")
+                    Log.e(TAG, "Login Successful")
                     input_email.error = null
                     input_password.error = null
                     val user = auth.currentUser
@@ -144,15 +142,18 @@ class Activity_login : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         val intent = Intent(this, Control_Fragment_Activity::class.java)
-        val input_password = findViewById<TextInputLayout>(R.id.input_password_login)
+        val input_password = binding.inputPasswordLogin
+        val password = binding.etPasswordLogin.text.toString()
 
         if (currentUser != null) {
             if (currentUser.isEmailVerified) {
+                Log.e(TAG,currentUser.email.toString())
                 Toast.makeText(this, "恭喜會員登入成功~~~", Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 database = Firebase.database.reference
                 val email = currentUser.email.toString()
                 database.child("已登入").child("email").setValue(email)
+                database.child("已登入").child("password").setValue(password)
 
             } else {
                 Toast.makeText(this, "請驗證您的電子郵件", Toast.LENGTH_SHORT).show()
@@ -177,9 +178,9 @@ class Activity_login : AppCompatActivity() {
         dialog.setTitle("驗證電子郵件")
         dialog.setMessage("要驗證您的電子郵件嗎?")
         dialog.setCancelable(false)
-        dialog.setNegativeButton("確定") {
+        dialog.setPositiveButton("確定") {
 
-                dialog, which ->
+                dialog1, which ->
             bottomSheet_dialog()
             val user = auth.currentUser
             user?.sendEmailVerification()
@@ -194,10 +195,10 @@ class Activity_login : AppCompatActivity() {
                 }
 
         }
-        dialog.setPositiveButton("取消") {
+        dialog.setNegativeButton("取消") {
 
-                dialog, which ->
-            dialog.dismiss()
+                dialog1, which ->
+            dialog1.dismiss()
 
         }
         dialog.show()

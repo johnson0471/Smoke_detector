@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,15 +25,15 @@
             app:navigationIcon="@drawable/ic_arrow"
             app:subtitleCentered="true"
             app:title="建立帳號"
-            app:titleTextColor="@color/white"
-            app:titleCentered="true" />
+            app:titleCentered="true"
+            app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_registered2"
         android:layout_width="350dp"
         android:layout_height="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="110dp"
         android:background="@drawable/white_btn"
         android:text="註冊"
         android:textColor="@color/black"
@@ -47,12 +46,12 @@
         app:layout_constraintTop_toBottomOf="@+id/input_ag_password_rg" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:gravity="center"
         android:id="@+id/input_name_rg"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:gravity="center"
         app:boxStrokeWidth="2dp"
         app:counterEnabled="true"
         app:counterMaxLength="10"
@@ -61,7 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar"
-        app:startIconDrawable="@drawable/login_person_focus">
+        app:startIconDrawable="@drawable/ic_person_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_name_rg"
@@ -69,34 +68,33 @@
             android:layout_height="60dp"
             android:hint="名字"
             android:inputType="textPersonName"
-            android:singleLine="true"
-            />
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:gravity="center"
         android:id="@+id/input_email_rg"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:gravity="center"
         app:boxStrokeWidth="2dp"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_name_rg"
-        app:startIconDrawable="@drawable/login_email_focus">
+        app:startIconDrawable="@drawable/ic_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_email_rg"
             android:layout_width="350dp"
             android:layout_height="60dp"
-            android:singleLine="true"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyz@."
             android:hint="電子郵件"
             android:inputType="textEmailAddress"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_email_et" />
@@ -104,24 +102,21 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
-
     <com.google.android.material.textfield.TextInputLayout
-        android:gravity="center"
         android:id="@+id/input_password_rg"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:passwordToggleDrawable="@drawable/login_eye_focus"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTintMode="src_atop"
+        android:gravity="center"
         app:errorEnabled="true"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_email_rg"
-        app:startIconDrawable="@drawable/login_key_focus">
+        app:passwordToggleDrawable="@drawable/ic_eye"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTintMode="src_atop"
+        app:startIconDrawable="@drawable/ic_key">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_password_rg"
@@ -129,36 +124,33 @@
             android:layout_height="60dp"
             android:hint="密碼"
             android:inputType="textPassword"
-            android:singleLine="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_email_et" />
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:gravity="center"
         android:id="@+id/input_ag_password_rg"
         style="@style/MyHint.style"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:passwordToggleDrawable="@drawable/login_eye_focus"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTintMode="src_atop"
+        android:gravity="center"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_password_rg"
-        app:startIconDrawable="@drawable/login_password_focus">
+        app:passwordToggleDrawable="@drawable/ic_eye"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTintMode="src_atop"
+        app:startIconDrawable="@drawable/ic_lock">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_ag_password_rg"
             android:layout_width="350dp"
             android:layout_height="60dp"
-            android:singleLine="true"
             android:hint="確認密碼"
             android:inputType="textPassword"
+            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_password_et" />

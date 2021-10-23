@@ -23,7 +23,6 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_temperature.*
 
 
 class TemperatureFragment : Fragment() {
@@ -76,7 +75,6 @@ class TemperatureFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        dataChange()
         Log.d(TAG, "onResume")
     }
 
@@ -119,7 +117,6 @@ class TemperatureFragment : Fragment() {
                         binding.tp1.text = tp_data
                         binding.tp1.setTextColor(Color.RED)
                         Log.e(TAG, tp_data)
-                        //makeNotification()
                     } else if (tp_data_int < tp_jg) {
                         binding.tp1.text = tp_data
                         binding.tp1.setTextColor(Color.GREEN)
@@ -129,7 +126,7 @@ class TemperatureFragment : Fragment() {
                     val c = (tp_data_int + 2) / 0.06
                     binding.progressBar.max = 1005
                     val currentProgress = c.toInt()
-                    ObjectAnimator.ofInt(progressBar, "progress", currentProgress)
+                    ObjectAnimator.ofInt(binding.progressBar, "progress", currentProgress)
                         .setDuration(1000)
                         .start()
                 }

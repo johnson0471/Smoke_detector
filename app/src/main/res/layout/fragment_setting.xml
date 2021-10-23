@@ -19,7 +19,7 @@
             android:id="@+id/toolbar_st"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_arrow"
+            app:navigationIcon="@drawable/ic_close"
             app:title="設定數據"
             app:titleCentered="true" />
 
@@ -82,7 +82,7 @@
         android:text="設定溫度"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tp_linearlayout" />
@@ -91,7 +91,7 @@
         android:id="@+id/remark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="備註 : 溫度預設為30°C，可自行修改。"
+        android:text="溫度預設為30°C，可自行修改。"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
@@ -139,11 +139,11 @@
         android:id="@+id/remark2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="備註 : 當火警解除時，請按下按鈕。"
+        android:text="當火警解除時，請按下按鈕。"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
