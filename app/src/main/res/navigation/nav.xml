@@ -25,4 +25,9 @@
         android:name="com.example.smoke_detector.ResidentialFragment"
         android:label="濕度偵測"
         tools:layout="@layout/fragment_residential" />
+    <fragment
+        android:id="@+id/personalInfoFragment"
+        android:name="com.example.smoke_detector.PersonalInfoFragment"
+        android:label="fragment_personal_info"
+        tools:layout="@layout/fragment_personal_info" />
 </navigation>

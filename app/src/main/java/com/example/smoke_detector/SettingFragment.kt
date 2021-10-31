@@ -49,13 +49,13 @@ class SettingFragment : AppCompatActivity() {
 
     private fun setDataTP() {
         binding.btnSetTP.setOnClickListener {
-            val tp_number = binding.tpEt.text.toString()
-            if (tp_number.isEmpty()) {
+            val tpNumber = binding.tpEt.text.toString()
+            if (tpNumber.isEmpty()) {
                 binding.tpInput.error = "請輸入溫度數值"
             } else {
                 binding.tpInput.error = null
                 hideKeyboard(binding.tpEt)
-                databaseReference.child("Judgment").child("temperature").setValue(tp_number.toInt())
+                databaseReference.child("Judgment").child("temperature").setValue(tpNumber.toInt())
                 Toast.makeText(this, "溫度設定成功", Toast.LENGTH_SHORT).show()
             }
         }
@@ -94,6 +94,7 @@ class SettingFragment : AppCompatActivity() {
                     val password = it.value.toString()
                     if (password == text) {
                         databaseReference.child("reset").child("ON").setValue(1)
+                        databaseReference.child("同步影像").child("ON").setValue(0)
                         Toast.makeText(this, "系統成功重置" + "狀態:1", Toast.LENGTH_SHORT).show()
                         Handler().postDelayed(
                             {

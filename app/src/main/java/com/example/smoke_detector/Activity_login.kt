@@ -1,31 +1,21 @@
 package com.example.smoke_detector
 
 
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
-
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.IBinder
 import android.util.Log
 import android.util.Patterns
-import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.smoke_detector.databinding.ActivityLoginBinding
-import com.example.smoke_detector.databinding.ActivityStartBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
-
-
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -82,7 +72,9 @@ class Activity_login : AppCompatActivity() {
                 else -> binding.etPasswordLogin.error = null
             }
 
-            if (binding.etEmailLogin.text.toString().isNotEmpty() && binding.etPasswordLogin.text.toString().isNotEmpty()) {
+            if (binding.etEmailLogin.text.toString()
+                    .isNotEmpty() && binding.etPasswordLogin.text.toString().isNotEmpty()
+            ) {
                 signInUser()
             }
 
@@ -107,7 +99,6 @@ class Activity_login : AppCompatActivity() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
     }
 
 
@@ -147,13 +138,15 @@ class Activity_login : AppCompatActivity() {
 
         if (currentUser != null) {
             if (currentUser.isEmailVerified) {
-                Log.e(TAG,currentUser.email.toString())
+                Log.e(TAG, currentUser.email.toString())
                 Toast.makeText(this, "恭喜會員登入成功~~~", Toast.LENGTH_SHORT).show()
                 startActivity(intent)
+                finish()
                 database = Firebase.database.reference
                 val email = currentUser.email.toString()
                 database.child("已登入").child("email").setValue(email)
                 database.child("已登入").child("password").setValue(password)
+                database.child("已登入").child("name").setValue(currentUser.displayName)
 
             } else {
                 Toast.makeText(this, "請驗證您的電子郵件", Toast.LENGTH_SHORT).show()
@@ -179,9 +172,8 @@ class Activity_login : AppCompatActivity() {
         dialog.setMessage("要驗證您的電子郵件嗎?")
         dialog.setCancelable(false)
         dialog.setPositiveButton("確定") {
-
                 dialog1, which ->
-            bottomSheet_dialog()
+            bottomSheet()
             val user = auth.currentUser
             user?.sendEmailVerification()
                 ?.addOnCompleteListener { task ->
@@ -204,7 +196,7 @@ class Activity_login : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun bottomSheet_dialog() {
+    private fun bottomSheet() {
 
         val bottomSheetDialog = BottomSheetDialog(this)
         val bottomSheet = layoutInflater.inflate(R.layout.bottom_sheet, null, false)

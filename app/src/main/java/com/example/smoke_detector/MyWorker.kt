@@ -38,14 +38,15 @@ class MyWorker(appContext: Context, workerParameters: WorkerParameters) :
         database = Firebase.database.reference.child("test")
         val dataListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val tp_data = dataSnapshot.child("溫度").child("5").value.toString()
-                val sm_data = dataSnapshot.child("煙霧").child("5").value.toString().toInt()
-                if (sm_data == 1) {
+                val tpData = dataSnapshot.child("溫度").child("5").value.toString()
+                val hdData = dataSnapshot.child("濕度").child("5").value.toString()
+                val smData = dataSnapshot.child("煙霧").child("5").value.toString().toInt()
+                if (smData == 1) {
                     sm_status = "異常"
-                    showNotification(tp_data, sm_status)
+                    showNotification(tpData, hdData, sm_status)
                 } else {
                     sm_status = "安全"
-                    showNotification(tp_data, sm_status)
+                    showNotification(tpData, hdData, sm_status)
                 }
             }
 
@@ -58,7 +59,7 @@ class MyWorker(appContext: Context, workerParameters: WorkerParameters) :
 
 
     //撰寫通知功能
-    private fun showNotification(temperature: String, sm_status: String) {
+    private fun showNotification(temperature: String, humidity: String, sm_status: String) {
         val intent = Intent(applicationContext, Control_Fragment_Activity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -68,12 +69,12 @@ class MyWorker(appContext: Context, workerParameters: WorkerParameters) :
         val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.zlz4)
             .setContentTitle("系統通知")
-            .setContentText("現在溫度${temperature}，煙霧狀態${sm_status}")
+            .setContentText("現在溫度${temperature}，濕度${humidity}%，煙霧狀態${sm_status}")
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
 
-        val channelName = "Channel Name"
+        val channelName = "系統通知"
         val channelDescription = "Channel Description"
         val channelImportance = NotificationManager.IMPORTANCE_HIGH
         val channel = NotificationChannel(CHANNEL_ID, channelName, channelImportance).apply {

@@ -58,73 +58,72 @@ class ResidentialFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentResidentialBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     private fun dataGet() {
         database = FirebaseDatabase.getInstance().reference.child("light").child("燈號")
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val light_1 = dataSnapshot.child("R1").value.toString().toInt()
-                val light_2 = dataSnapshot.child("R2").value.toString().toInt()
-                val light_3 = dataSnapshot.child("R3").value.toString().toInt()
-                val light_4 = dataSnapshot.child("R4").value.toString().toInt()
-                val light_5 = dataSnapshot.child("R5").value.toString().toInt()
-                val light_6 = dataSnapshot.child("R6").value.toString().toInt()
-                val light_7 = dataSnapshot.child("R7").value.toString().toInt()
-                val light_8 = dataSnapshot.child("R8").value.toString().toInt()
-                val light_9 = dataSnapshot.child("R9").value.toString().toInt()
+                val light1 = dataSnapshot.child("R1").value.toString().toInt()
+                val light2 = dataSnapshot.child("R2").value.toString().toInt()
+                val light3 = dataSnapshot.child("R3").value.toString().toInt()
+                val light4 = dataSnapshot.child("R4").value.toString().toInt()
+                val light5 = dataSnapshot.child("R5").value.toString().toInt()
+                val light6 = dataSnapshot.child("R6").value.toString().toInt()
+                val light7 = dataSnapshot.child("R7").value.toString().toInt()
+                val light8 = dataSnapshot.child("R8").value.toString().toInt()
+                val light9 = dataSnapshot.child("R9").value.toString().toInt()
 
-                if (light_1 == 1) {
+                if (light1 == 1) {
                     binding.circle1.setImageResource(R.drawable.red_circle)
                 }else{
                     binding.circle1.setImageResource(R.drawable.gray_circle)
                 }
 
-                if (light_2 == 1) {
+                if (light2 == 1) {
                     binding.circle2.setImageResource(R.drawable.red_circle)
                 }else{
                     binding.circle2.setImageResource(R.drawable.gray_circle)
                 }
 
-                if (light_3 == 1) {
+                if (light3 == 1) {
                     binding.circle3.setImageResource(R.drawable.red_circle)
                 }else{
                     binding.circle3.setImageResource(R.drawable.gray_circle)
                 }
 
-                if (light_4 == 1) {
+                if (light4 == 1) {
                     binding.circle4.setImageResource(R.drawable.red_circle)
                 }else{
                     binding.circle4.setImageResource(R.drawable.gray_circle)
                 }
 
-                if (light_5 == 1) {
+                if (light5 == 1) {
                     binding.circleCenter.setImageResource(R.drawable.red_circle)
                 }else{
                     binding.circleCenter.setImageResource(R.drawable.gray_circle)
                 }
 
-                if (light_6 == 1) {
+                if (light6 == 1) {
                     binding.circle6.setImageResource(R.drawable.red_circle)
                 }else{
                     binding.circle6.setImageResource(R.drawable.gray_circle)
                 }
 
-                if (light_7 == 1) {
+                if (light7 == 1) {
                     binding.circle7.setImageResource(R.drawable.red_circle)
                 }else{
                     binding.circle7.setImageResource(R.drawable.gray_circle)
                 }
 
-                if (light_8 == 1) {
+                if (light8 == 1) {
                     binding.circle8.setImageResource(R.drawable.red_circle)
                 }else{
                     binding.circle8.setImageResource(R.drawable.gray_circle)
                 }
 
-                if (light_9 == 1) {
+                if (light9 == 1) {
                     binding.circle9.setImageResource(R.drawable.red_circle)
                 }else{
                     binding.circle9.setImageResource(R.drawable.gray_circle)

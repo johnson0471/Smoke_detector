@@ -1,59 +1,50 @@
 package com.example.smoke_detector
 
-import android.app.Service
 import android.content.*
+import android.net.Uri
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.work.*
 import com.example.smoke_detector.R.layout.*
 import com.example.smoke_detector.databinding.ActivityControlBinding
+import com.example.smoke_detector.databinding.ActivityPersonalBinding
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import java.util.*
 import java.util.concurrent.TimeUnit
-import androidx.annotation.NonNull
-import androidx.core.content.getSystemService
-import androidx.navigation.Navigation
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.database.*
-import java.security.Provider
+import com.google.firebase.ktx.Firebase
 
 
-class Control_Fragment_Activity : AppCompatActivity(), ServiceConnection {
+class Control_Fragment_Activity : AppCompatActivity() {
 
     private lateinit var binding: ActivityControlBinding
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private val TAG = javaClass.simpleName
-    var myService: MyService? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityControlBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestEmail()
-//            .build()
-//        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        val intent = Intent(this, MyService::class.java)
-//        startService(intent)
-        bindService(intent, this, Context.BIND_AUTO_CREATE)
+        startService(Intent(this, MyService::class.java))
         btmNavigationView()
         drawerOpen()
         navFunction()
         myWorkManager()
         cameraTesting()
+        internet()
     }
 
     override fun onStart() {
@@ -64,6 +55,7 @@ class Control_Fragment_Activity : AppCompatActivity(), ServiceConnection {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
+
     }
 
     override fun onStop() {
@@ -75,7 +67,6 @@ class Control_Fragment_Activity : AppCompatActivity(), ServiceConnection {
         binding.navigationDrawer.setNavigationItemSelectedListener {
             auth = FirebaseAuth.getInstance()
             database = FirebaseDatabase.getInstance().reference
-            val currentUser = auth.currentUser
             when (it.itemId) {
                 R.id.item_logout -> {
                     AlertDialog.Builder(this)
@@ -83,17 +74,14 @@ class Control_Fragment_Activity : AppCompatActivity(), ServiceConnection {
                         .setMessage("確定要登出您的帳號嗎")
                         .setCancelable(false)
                         .setPositiveButton("確定") { _, _ ->
-                            unbindService(this)
-//                            val intent = Intent(this,MyService::class.java)
-//                            stopService(intent)
-                            auth.signOut()
+                            Firebase.auth.signOut()
+                            database.child("已登入").child("name").removeValue()
                             database.child("已登入").child("email").removeValue()
                             database.child("已登入").child("password").removeValue()
                             startActivity(Intent(this, Activity_login::class.java))
                             finish()
-                            if (currentUser != null) {
-                                Log.e(TAG, currentUser.email.toString())
-                            }
+                            val intent = Intent(this, MyService::class.java)
+                            stopService(intent)
                         }
                         .setNegativeButton("取消", null)
                         .show()
@@ -108,6 +96,18 @@ class Control_Fragment_Activity : AppCompatActivity(), ServiceConnection {
         }
     }
 
+    private fun internet() {
+        val header = binding.navigationDrawer.inflateHeaderView(R.layout.header_navigation)
+        val imageButton = header.findViewById<ImageButton>(R.id.fireStation)
+        imageButton.setOnClickListener {
+            Toast.makeText(this, "開啟外部網頁", Toast.LENGTH_SHORT).show()
+            val uri = Uri.parse("https://www.nfa.gov.tw/cht/index.php?")
+            val intent = Intent(Intent.ACTION_VIEW,uri)
+            startActivity(intent)
+        }
+    }
+
+
     private fun drawerOpen() {
         val materialToolbar = findViewById<MaterialToolbar>(R.id.materialToolbar)
         materialToolbar.setNavigationOnClickListener {
@@ -117,6 +117,15 @@ class Control_Fragment_Activity : AppCompatActivity(), ServiceConnection {
             } else {
                 binding.drawerLayout.openDrawer(binding.navigationDrawer)
             }
+        }
+        materialToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.account_data -> {
+                    startActivity(Intent(this, PersonalActivity::class.java))
+                    finish()
+                }
+            }
+            return@setOnMenuItemClickListener true
         }
     }
 
@@ -165,23 +174,27 @@ class Control_Fragment_Activity : AppCompatActivity(), ServiceConnection {
         database = FirebaseDatabase.getInstance().reference
         val dataListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val tpData = snapshot.child("test").child("溫度").child("5").value.toString()
-                val smData = snapshot.child("test").child("煙霧").child("5").value.toString().toInt()
-                val tpJudge =
-                    snapshot.child("Judgment").child("temperature").value.toString().toInt()
-                val tpInt = tpData.substring(0, tpData.indexOf("°C")).toInt()
-                when {
-                    tpInt >= tpJudge && smData == 1 -> {
-                        cameraDialog()
+                val tpData = snapshot.child("溫度").child("5").value.toString()
+                val smData = snapshot.child("煙霧").child("5").value.toString().toInt()
+                database.child("Judgment").child("temperature").get().addOnSuccessListener {
+                    val tpJudge = it.value.toString().toInt()
+                    val tpInt = tpData.substring(0, tpData.indexOf("°C")).toInt()
+                    when {
+                        tpInt >= tpJudge && smData == 1 -> {
+                            if (!isFinishing) {
+                                cameraDialog()
+                            }
+                        }
                     }
                 }
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.e(TAG, "onCancelled", databaseError.toException())
             }
         }
-        database.addValueEventListener(dataListener)
+        database.child("test").addValueEventListener(dataListener)
     }
 
     private fun cameraDialog() {
@@ -192,15 +205,16 @@ class Control_Fragment_Activity : AppCompatActivity(), ServiceConnection {
             .setTitle("火災警報")
             .setMessage("目前屋內溫度及煙霧警示異常\n請盡快開啟攝像監控並開啟鏡頭")
             .setCancelable(false)
-            .setPositiveButton("確定") { _, _ ->
+            .setPositiveButton("確定") { dialog, _ ->
                 vibrator.cancel()
+                dialog.dismiss()
             }
             .show()
     }
 
     private fun vibratePhone() {
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        val pattern = longArrayOf(200, 2000)
+        val pattern = longArrayOf(200, 1000)
         vibrator.vibrate(VibrationEffect.createWaveform(pattern, 0))
     }
 
@@ -217,20 +231,7 @@ class Control_Fragment_Activity : AppCompatActivity(), ServiceConnection {
             .enqueueUniquePeriodicWork("work_name", ExistingPeriodicWorkPolicy.KEEP, myRequest)
     }
 
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        val binder = service as MyService.MainBinder
-        myService = binder.getService()
-        myService?.temperatureWarring()
-        myService?.smokeWarring()
-        myService?.residentialWarring()
-        Log.d(TAG, "onServiceConnected")
 
-    }
-
-    override fun onServiceDisconnected(name: ComponentName?) {
-        myService = null
-        Log.d(TAG, "onServiceDisconnected")
-    }
 }
 
 

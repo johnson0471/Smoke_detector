@@ -10,6 +10,7 @@ import android.util.Log
 import android.util.Patterns
 import android.widget.LinearLayout
 import android.widget.Toast
+import com.example.smoke_detector.MyWorker.Companion.TAG
 import com.example.smoke_detector.databinding.ActivityRegisteredBinding
 import com.example.smoke_detector.databinding.ActivityRegisteredBinding.*
 import com.google.android.material.appbar.MaterialToolbar
@@ -18,6 +19,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -28,6 +30,8 @@ class Activity_registered : AppCompatActivity() {
     private lateinit var binding: ActivityRegisteredBinding
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
+    private val TAG = javaClass.simpleName
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +40,9 @@ class Activity_registered : AppCompatActivity() {
         binding = inflate(layoutInflater)
         setContentView(binding.root)
 
-        val btn_register = binding.btnRegistered2
-        btn_register.setOnClickListener {
-            register_User()
+        val btnRegister = binding.btnRegistered2
+        btnRegister.setOnClickListener {
+            registerUser()
         }
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar_rg)
@@ -49,11 +53,7 @@ class Activity_registered : AppCompatActivity() {
 
     }
 
-    private fun register_User() {
-        user_error()
-    }
-
-    private fun user_error() {
+    private fun registerUser() {
 
         val input_name = binding.inputNameRg
         val input_email = binding.inputEmailRg
@@ -126,8 +126,7 @@ class Activity_registered : AppCompatActivity() {
 
             if (password.length < 6) {
                 input_password.error = "密碼欄位不能小於6個字"
-            }
-            else input_password.error = null
+            } else input_password.error = null
 
 
             when {
@@ -154,12 +153,24 @@ class Activity_registered : AppCompatActivity() {
 
     private fun updateUserAuth() {
 
-        val email_auth = binding.etEmailRg.text.toString()
-        val password_auth = binding.etPasswordRg.text.toString()
+        val nameAuth = binding.etNameRg.text.toString()
+        val emailAuth = binding.etEmailRg.text.toString()
+        val passwordAuth = binding.etPasswordRg.text.toString()
 
-        auth.createUserWithEmailAndPassword(email_auth, password_auth)
+        auth.createUserWithEmailAndPassword(emailAuth, passwordAuth)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    val user = Firebase.auth.currentUser
+                    val profileUpdates = userProfileChangeRequest {
+                        displayName = nameAuth
+                    }
+                    user!!.updateProfile(profileUpdates)
+                        .addOnCompleteListener { task2 ->
+                            if (task2.isSuccessful) {
+                                Log.d(TAG, "User profile updated.")
+                            }else
+                                Log.d(TAG, "Failed " + task2.exception)
+                        }
                     sendUsers()
                     Toast.makeText(this, "恭喜您成為我們的會員~~", Toast.LENGTH_SHORT).show()
                     finish()
@@ -168,17 +179,19 @@ class Activity_registered : AppCompatActivity() {
                     Toast.makeText(this, "帳戶電子郵件已有使用者註冊", Toast.LENGTH_SHORT).show()
                 }
             }
+
+
     }
 
     private fun sendUsers() {
 
-        val username = binding.etNameRg.text.toString()
+        val userName = binding.etNameRg.text.toString()
         val userEmail = binding.etEmailRg.text.toString()
         val userPassword = binding.etPasswordRg.text.toString()
 
         database = Firebase.database.reference
-        val User = user(username, userEmail, userPassword)
-        database.child("已註冊").child(username).setValue(User).addOnSuccessListener {
+        val userInfo = user(userName, userEmail, userPassword)
+        database.child("已註冊").child(userName).setValue(userInfo).addOnSuccessListener {
 
             binding.etNameRg.text?.clear()
             binding.etEmailRg.text?.clear()
