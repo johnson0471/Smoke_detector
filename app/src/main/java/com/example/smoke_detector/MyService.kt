@@ -1,53 +1,55 @@
 package com.example.smoke_detector
 
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.*
 import android.app.PendingIntent.*
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Color
+
 import android.os.*
 import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDialog
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.res.ResourcesCompat
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import android.os.PowerManager
+
+import android.app.KeyguardManager.KeyguardLock
+
+import android.app.KeyguardManager
+import android.app.Notification.VISIBILITY_PUBLIC
+import android.os.PowerManager.WakeLock
+import androidx.annotation.RequiresApi
+import com.example.smoke_detector.MyWorker.Companion.CHANNEL_ID
+import kotlin.system.exitProcess
+import android.app.Service.VIBRATOR_SERVICE as VIBRATOR_SERVICE1
+
 
 class MyService : Service() {
 
     private lateinit var database: DatabaseReference
     private val TAG = MyService::class.java.simpleName
-    private lateinit var auth: FirebaseAuth
-
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        cameraTesting()
         temperatureWarring()
         smokeWarring()
         residentialWarring()
-        auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
-        val email = user?.email
-        if (user == null){
-            Log.e(TAG,email.toString())
-            stopSelf()
-        }
+        Log.e(TAG, "onStartCommand")
         return START_NOT_STICKY
     }
+
+    override fun onCreate() {
+        super.onCreate()
+        Log.e(TAG, "onCreate")
+    }
+
 
     private fun temperatureWarring() {
         database = Firebase.database.reference
@@ -98,19 +100,22 @@ class MyService : Service() {
         database = FirebaseDatabase.getInstance().reference
         val dataListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val tpData = snapshot.child("溫度").child("5").value.toString()
                 val smData = snapshot.child("煙霧").child("5").value.toString().toInt()
+                val tpData = snapshot.child("溫度").child("5").value.toString()
                 database.child("Judgment").child("temperature").get().addOnSuccessListener {
                     val tpJudge = it.value.toString().toInt()
                     val tpInt = tpData.substring(0, tpData.indexOf("°C")).toInt()
-                    when {
-                        tpInt >= tpJudge && smData == 1 -> {
+                    while (smData == 1 ) {
+                        if (tpInt>=tpJudge){
                             cameraDialog()
+                            notifyFire()
+                            Log.e(TAG,"cameraTesting")
                         }
+                        break
                     }
                 }
-
             }
+
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.e(TAG, "onCancelled", databaseError.toException())
             }
@@ -118,27 +123,32 @@ class MyService : Service() {
         database.child("test").addValueEventListener(dataListener)
     }
 
+
+
     private fun cameraDialog() {
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibratePhone()
-        val builder = AlertDialog.Builder(this)
+        val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
+        val builder = AlertDialog.Builder(this, R.style.Theme_MaterialComponents_Dialog_Alert)
             .setIcon(R.drawable.ic_baseline_warning_24)
             .setTitle("火災警報")
             .setMessage("目前屋內溫度及煙霧警示異常\n請盡快開啟攝像監控並開啟鏡頭")
             .setCancelable(false)
-            .setPositiveButton("確定") { _, _ ->
+            .setPositiveButton("確定") { dialog, _ ->
                 vibrator.cancel()
+                dialog.cancel()
             }
-            .setNegativeButton("取消",null)
         val mAlertDialog = builder.create()
-        mAlertDialog.setCanceledOnTouchOutside(false)
-        mAlertDialog.window!!.setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG)
-        mAlertDialog.window!!.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+            mAlertDialog.window!!.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+        } else {
+            mAlertDialog.window!!.setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG)
+        }
         mAlertDialog.show()
     }
 
+
     private fun vibratePhone() {
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
         val pattern = longArrayOf(200, 1000)
         vibrator.vibrate(VibrationEffect.createWaveform(pattern, 0))
     }
@@ -222,7 +232,7 @@ class MyService : Service() {
             NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
 
         manager.createNotificationChannel(channel)
-        val builder = NotificationCompat.Builder(this,channelId)
+        val builder = NotificationCompat.Builder(this, channelId)
             .setContentTitle("溫度警示")
             .setSmallIcon(R.drawable.zlz4)
             .setContentText("室內偵測溫度過高，請注意!!!")
@@ -240,7 +250,7 @@ class MyService : Service() {
             NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
 
         manager.createNotificationChannel(channel)
-        val builder = NotificationCompat.Builder(this,channelId)
+        val builder = NotificationCompat.Builder(this, channelId)
             .setContentTitle("煙霧警示")
             .setSmallIcon(R.drawable.zlz4)
             .setContentText("室內偵測到煙霧，請注意!!!")
@@ -265,14 +275,29 @@ class MyService : Service() {
         manager.notify(2, builder.build())
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private fun notifyFire() {
+        val channelId = "fire notification"
+        val channelName = "火災緊急通知"
+        val manager =
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val channel =
+            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+        manager.createNotificationChannel(channel)
+        val builder = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("火災警示")
+            .setSmallIcon(R.drawable.zlz4)
+            .setContentText("疑似有火災現象，請注意!!!")
+            .setChannelId(channelId)
+        manager.notify(0, builder.build())
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        Log.e(TAG,"onDestroy")
+        Log.e(TAG, "onDestroy")
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        Log.e(TAG,"onBind")
+    override fun onBind(p0: Intent?): IBinder? {
         return null
     }
-
 }

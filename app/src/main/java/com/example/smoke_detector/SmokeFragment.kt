@@ -1,23 +1,13 @@
 package com.example.smoke_detector
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.app.NotificationCompat
-import com.example.smoke_detector.R
 import com.example.smoke_detector.databinding.FragmentSmokeBinding
-import com.example.smoke_detector.databinding.FragmentTemperatureBinding
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
@@ -32,8 +22,13 @@ class SmokeFragment : Fragment() {
     private val TAG = javaClass.simpleName
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+        dataSmoke()
+    }
+
+    override fun onStart() {
+        super.onStart()
         dataSmoke()
     }
 
@@ -42,21 +37,18 @@ class SmokeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSmokeBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     private fun dataSmoke() {
-        database = Firebase.database.reference.child("test").child("煙霧").child("5")
+        database = Firebase.database.reference
         val dataListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val sm_data = dataSnapshot.getValue<String>().toString()
-                val s = sm_data.toInt()
-                if (s == 1) {
+                val smData = dataSnapshot.value.toString().toInt()
+                if (smData == 1) {
                     binding.tvStatus.text = "異常"
                     binding.tvStatus.setTextColor(Color.RED)
                     binding.ivSmoke.setImageResource(R.drawable.ic_warning)
-                    //makeNotification()
                 } else {
                     binding.tvStatus.text = "安全"
                     binding.tvStatus.setTextColor(Color.GREEN)
@@ -68,8 +60,7 @@ class SmokeFragment : Fragment() {
                 Log.w(TAG, "dataSmoke Error", databaseError.toException())
             }
         }
-        database.addValueEventListener(dataListener)
-
+        database.child("test").child("煙霧").child("5").addValueEventListener(dataListener)
     }
 
 }

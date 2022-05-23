@@ -30,7 +30,7 @@ class MyWorker(appContext: Context, workerParameters: WorkerParameters) :
 
     override fun doWork(): Result {
         Log.d(TAG, "doWork: Success function called")
-        status()
+        status2()
         return Result.success()
     }
 
@@ -55,6 +55,22 @@ class MyWorker(appContext: Context, workerParameters: WorkerParameters) :
             }
         }
         database.addValueEventListener(dataListener)
+    }
+
+    private fun status2() {
+        database = Firebase.database.reference.child("test")
+        database.get().addOnSuccessListener {
+            val tpData = it.child("溫度").child("5").value.toString()
+            val hdData = it.child("濕度").child("5").value.toString()
+            val smData = it.child("煙霧").child("5").value.toString().toInt()
+            if (smData == 1) {
+                sm_status = "異常"
+                showNotification(tpData, hdData, sm_status)
+            } else {
+                sm_status = "安全"
+                showNotification(tpData, hdData, sm_status)
+            }
+        }
     }
 
 

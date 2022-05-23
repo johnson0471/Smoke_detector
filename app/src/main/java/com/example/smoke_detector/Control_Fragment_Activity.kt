@@ -38,18 +38,16 @@ class Control_Fragment_Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityControlBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        startService(Intent(this, MyService::class.java))
         btmNavigationView()
         drawerOpen()
         navFunction()
         myWorkManager()
-        cameraTesting()
-        internet()
     }
 
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStart")
+
     }
 
     override fun onDestroy() {
@@ -78,9 +76,9 @@ class Control_Fragment_Activity : AppCompatActivity() {
                             database.child("已登入").child("name").removeValue()
                             database.child("已登入").child("email").removeValue()
                             database.child("已登入").child("password").removeValue()
-                            startActivity(Intent(this, Activity_login::class.java))
+                            startActivity(Intent(this,Activity_login::class.java))
                             finish()
-                            val intent = Intent(this, MyService::class.java)
+                            val intent = Intent(this,MyService::class.java)
                             stopService(intent)
                         }
                         .setNegativeButton("取消", null)
@@ -91,21 +89,18 @@ class Control_Fragment_Activity : AppCompatActivity() {
                     startActivity(Intent(this, SettingFragment::class.java))
                     finish()
                 }
+                R.id.item_internet->{
+                    Toast.makeText(this, "開啟外部網頁", Toast.LENGTH_SHORT).show()
+                    val uri = Uri.parse("https://www.nfa.gov.tw/cht/index.php?")
+                    val intent = Intent(Intent.ACTION_VIEW,uri)
+                    startActivity(intent)
+                }
             }
             return@setNavigationItemSelectedListener true
         }
     }
 
-    private fun internet() {
-        val header = binding.navigationDrawer.inflateHeaderView(R.layout.header_navigation)
-        val imageButton = header.findViewById<ImageButton>(R.id.fireStation)
-        imageButton.setOnClickListener {
-            Toast.makeText(this, "開啟外部網頁", Toast.LENGTH_SHORT).show()
-            val uri = Uri.parse("https://www.nfa.gov.tw/cht/index.php?")
-            val intent = Intent(Intent.ACTION_VIEW,uri)
-            startActivity(intent)
-        }
-    }
+
 
 
     private fun drawerOpen() {
@@ -123,6 +118,8 @@ class Control_Fragment_Activity : AppCompatActivity() {
                 R.id.account_data -> {
                     startActivity(Intent(this, PersonalActivity::class.java))
                     finish()
+                    val intent = Intent(this,MyService::class.java)
+                    stopService(intent)
                 }
             }
             return@setOnMenuItemClickListener true
@@ -163,62 +160,6 @@ class Control_Fragment_Activity : AppCompatActivity() {
         }
     }
 
-//    private fun signOut() {
-//        mGoogleSignInClient.signOut()
-//            .addOnCompleteListener(this, OnCompleteListener<Void?> {
-//                // ...
-//            })
-//    }
-
-    private fun cameraTesting() {
-        database = FirebaseDatabase.getInstance().reference
-        val dataListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val tpData = snapshot.child("溫度").child("5").value.toString()
-                val smData = snapshot.child("煙霧").child("5").value.toString().toInt()
-                database.child("Judgment").child("temperature").get().addOnSuccessListener {
-                    val tpJudge = it.value.toString().toInt()
-                    val tpInt = tpData.substring(0, tpData.indexOf("°C")).toInt()
-                    when {
-                        tpInt >= tpJudge && smData == 1 -> {
-                            if (!isFinishing) {
-                                cameraDialog()
-                            }
-                        }
-                    }
-                }
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.e(TAG, "onCancelled", databaseError.toException())
-            }
-        }
-        database.child("test").addValueEventListener(dataListener)
-    }
-
-    private fun cameraDialog() {
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        vibratePhone()
-        AlertDialog.Builder(this)
-            .setIcon(R.drawable.ic_baseline_warning_24)
-            .setTitle("火災警報")
-            .setMessage("目前屋內溫度及煙霧警示異常\n請盡快開啟攝像監控並開啟鏡頭")
-            .setCancelable(false)
-            .setPositiveButton("確定") { dialog, _ ->
-                vibrator.cancel()
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    private fun vibratePhone() {
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        val pattern = longArrayOf(200, 1000)
-        vibrator.vibrate(VibrationEffect.createWaveform(pattern, 0))
-    }
-
-
     private fun myWorkManager() {
         val constraints = Constraints.Builder()
             .setRequiresCharging(false)
@@ -230,8 +171,6 @@ class Control_Fragment_Activity : AppCompatActivity() {
         WorkManager.getInstance(this)
             .enqueueUniquePeriodicWork("work_name", ExistingPeriodicWorkPolicy.KEEP, myRequest)
     }
-
-
 }
 
 

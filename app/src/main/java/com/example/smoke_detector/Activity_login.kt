@@ -1,6 +1,5 @@
 package com.example.smoke_detector
 
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,20 +24,17 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-
 class Activity_login : AppCompatActivity() {
 
     companion object {
         private const val RC_SIGN_IN = 1
     }
 
-
     private val TAG = javaClass.simpleName
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var binding: ActivityLoginBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,6 +136,7 @@ class Activity_login : AppCompatActivity() {
             if (currentUser.isEmailVerified) {
                 Log.e(TAG, currentUser.email.toString())
                 Toast.makeText(this, "恭喜會員登入成功~~~", Toast.LENGTH_SHORT).show()
+                startService(Intent(this, MyService::class.java))
                 startActivity(intent)
                 finish()
                 database = Firebase.database.reference
@@ -167,7 +164,6 @@ class Activity_login : AppCompatActivity() {
 
         bottomSheetDialog.setContentView(bottomSheet)
 
-
         dialog.setTitle("驗證電子郵件")
         dialog.setMessage("要驗證您的電子郵件嗎?")
         dialog.setCancelable(false)
@@ -185,13 +181,10 @@ class Activity_login : AppCompatActivity() {
                         Toast.makeText(this, "驗證信送出失敗", Toast.LENGTH_SHORT).show()
                     }
                 }
-
         }
         dialog.setNegativeButton("取消") {
-
                 dialog1, which ->
             dialog1.dismiss()
-
         }
         dialog.show()
     }

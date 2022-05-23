@@ -94,7 +94,7 @@ class SettingFragment : AppCompatActivity() {
                     val password = it.value.toString()
                     if (password == text) {
                         databaseReference.child("reset").child("ON").setValue(1)
-                        databaseReference.child("同步影像").child("ON").setValue(0)
+                        databaseReference.child("同步影像").child("on").setValue(0)
                         Toast.makeText(this, "系統成功重置" + "狀態:1", Toast.LENGTH_SHORT).show()
                         Handler().postDelayed(
                             {

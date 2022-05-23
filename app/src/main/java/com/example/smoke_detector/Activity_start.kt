@@ -3,7 +3,6 @@ package com.example.smoke_detector
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
 import com.example.smoke_detector.databinding.ActivityStartBinding
 import com.google.firebase.auth.FirebaseAuth
 

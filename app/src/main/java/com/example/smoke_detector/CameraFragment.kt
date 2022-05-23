@@ -1,7 +1,9 @@
 package com.example.smoke_detector
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.smoke_detector.databinding.FragmentCameraBinding
 import android.webkit.WebViewClient
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 
 class CameraFragment : Fragment() {
@@ -19,20 +20,24 @@ class CameraFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var database: DatabaseReference
     private val TAG = javaClass.simpleName
-    private val src = "http://192.168.0.104:5000"
+    private val url = "http://192.168.216.82:5000"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate")
     }
-
-
 
     override fun onStart() {
         super.onStart()
+        Log.d(TAG, "onStart")
         openCamera()
         syncData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,10 +66,37 @@ class CameraFragment : Fragment() {
         }
     }
 
-    private fun syncData(){
+    private fun syncData() {
         database = FirebaseDatabase.getInstance().reference
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.child("on").value.toString().toInt() == 1) {
+                    if (isAdded){
+                        AlertDialog.Builder(this@CameraFragment.requireContext())
+                            .setTitle("同步連線")
+                            .setMessage("監控中心想要取得您的畫面權限")
+                            .setCancelable(false)
+                            .setPositiveButton("確定") { dialog, _ ->
+                                database.child("串流網址").child("url").setValue(url)
+                                dialog.cancel()
+                            }
+                            .setNegativeButton("取消") { dialog, _ ->
+                                database.child("同步影像").child("on").setValue(0)
+                            }
+                            .show()
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException())
+            }
+        }
+        database.child("同步影像").addValueEventListener(postListener)
+
         binding.btnSync.setOnClickListener {
-            database.child("同步影像").child("ON").setValue("1")
+            database.child("同步影像").child("on").setValue(0)
+            database.child("串流網址").child("url").removeValue()
         }
     }
 
@@ -74,7 +106,7 @@ class CameraFragment : Fragment() {
         webSettings.javaScriptEnabled = true
         binding.streamView.onResume()
         binding.streamView.webViewClient = WebViewClient()
-        binding.streamView.loadUrl(src)
+        binding.streamView.loadUrl(url)
     }
 
     override fun onDestroyView() {
@@ -85,7 +117,15 @@ class CameraFragment : Fragment() {
         binding.streamView.destroy()
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onResume")
+    }
 
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop")
+    }
 
     companion object {
 

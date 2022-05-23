@@ -12,7 +12,6 @@ import com.google.firebase.database.*
 
 
 class ResidentialFragment : Fragment() {
-    // TODO: Rename and change types of parameters
 
     private var _binding: FragmentResidentialBinding? = null
     private val binding get() = _binding!!
